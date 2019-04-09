@@ -413,6 +413,7 @@ public:
         bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
             bool isOk = false;
             /*获得args*/
             auto varArgs1 = getCallArgs(this->pos, 1, &isOk, this->state);
@@ -458,6 +459,7 @@ public:
             QString varTableFullPath;
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
 
             bool isOk = false;
             /*获得args*/
@@ -616,6 +618,8 @@ public:
         bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             bool isOk = false;
             /*获得args*/
             auto varArgs1 = getCallArgs(this->pos, 1, &isOk, this->state);
@@ -678,6 +682,8 @@ public:
         inline bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             bool isOk = false;
             /*获得args*/
             auto varArgsKeyPart =
@@ -773,6 +779,8 @@ title=\filesourcenumbernameone \thefilesourcenumber
         inline bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             bool isOk = false;
             /*获得args*/
             auto varArgsKeyPart =
@@ -868,6 +876,8 @@ title=\treeindexnumbernameone \thetreeindexnumber
         inline bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             bool isOk = false;
             /*获得args*/
             auto varArgsKeyPart =
@@ -973,6 +983,8 @@ title=\commandnumbernameone \thecommandnumber
         bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             bool isOk = false;
             /*获得args*/
             auto varArgsKeyPart =
@@ -1087,6 +1099,8 @@ title=\commandnumbernameone \thecommandnumber
         bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             bool isOk = false;
             /*获得args*/
             auto varArgs1 = getCallArgs(this->pos, 1, &isOk, this->state);
@@ -1144,6 +1158,8 @@ title=\commandnumbernameone \thecommandnumber
         bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             bool isOk = false;
             /*获得args*/
             auto varArgs1 = getCallArgs(this->pos, 1, &isOk, this->state);
@@ -1200,6 +1216,8 @@ title=\commandnumbernameone \thecommandnumber
         bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             bool isOk = false;
             /*获得args*/
             auto varArgs1 = getCallArgs(this->pos, 1, &isOk, this->state);
@@ -1256,6 +1274,8 @@ title=\commandnumbernameone \thecommandnumber
         bool toRawString(item_list_pos * arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             bool isOk = false;
             /*获得args*/
             auto varArgs1 = getCallArgs(this->pos, 1, &isOk, this->state);
@@ -1329,6 +1349,8 @@ title=\commandnumbernameone \thecommandnumber
 
         bool toRawString(item_list_pos * arg) override {
             auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
             *v = std::make_shared<RawString>(
                 plainStringToTexString(data), v, state);
             state->data.erase(this->pos);
@@ -1555,7 +1577,10 @@ title=\commandnumbernameone \thecommandnumber
 
                         const auto varNewSize = varLine.size() - varPos;
                         varLine = varLine.right(varNewSize);
-                        assert(varLine.size() == varNewSize);
+                        if (varLine.size() == varNewSize) {
+                        } else {
+                            the_book_throw(u8R"(逻辑错误！)"sv);
+                        }
                         goto pass_next_l;
 
                     }
@@ -1606,7 +1631,10 @@ title=\commandnumbernameone \thecommandnumber
                     static_cast<ProgramString *>(varItemRaw.get());
 
                 auto varString = varProgram->data;
-                assert(false == varString.isEmpty());
+                if (false == varString.isEmpty()) {
+                } else {
+                    the_book_throw(u8R"(字符串为空！)"sv);
+                }
 
                 const static auto varLeftExp = QRegularExpression(qsl(R"(\s*\[=*\[)"));
                 const static auto varRightExp = QRegularExpression(qsl(R"(\]=*\])"));
@@ -1628,6 +1656,7 @@ title=\commandnumbernameone \thecommandnumber
                             if (varProgram->data != varString) {
                                 /*如果字符串改变了,加入新的搜索节点*/
                                 auto v = varData.emplace(varPos);
+                                varState->line_number = (*varPos)->line_number;
                                 varData.erase(varPos);
                                 *v = std::make_shared< ProgramString >(varString,
                                     v,
@@ -1663,6 +1692,7 @@ title=\commandnumbernameone \thecommandnumber
                             /*将index的左边加入搜索*/
                             if (varIndex) {
                                 auto v = varData.emplace(varPos);
+                                varState->line_number = (*varPos)->line_number;
                                 auto varLeftString = varString.left(varIndex);
                                 *v = std::make_shared< ProgramString >(varLeftString,
                                     v,
@@ -1673,8 +1703,12 @@ title=\commandnumbernameone \thecommandnumber
                             if (isLeft) {
                                 ++varStartOpCount;
                                 auto v = varData.emplace(varPos);
+                                varState->line_number = (*varPos)->line_number;
                                 auto varDeepth = varStartOpCount - varEndOpCount;
-                                assert(varDeepth >= 0);
+                                if (varDeepth >= 0) {
+                                } else {
+                                    the_book_throw(u8R"(逻辑错误！)"sv);
+                                }
                                 *v = std::make_shared< FunctionStart >(varDeepth,
                                     v,
                                     varState);
@@ -1689,8 +1723,12 @@ title=\commandnumbernameone \thecommandnumber
                                 varMaxDeepth = std::max(varMaxDeepth, varDeepth);
                             } else {
                                 auto v = varData.emplace(varPos);
+                                varState->line_number = (*varPos)->line_number;
                                 auto varDeepth = varStartOpCount - varEndOpCount;
-                                assert(varDeepth >= 0);
+                                if (varDeepth >= 0) {
+                                } else {
+                                    the_book_throw(u8R"(逻辑错误！)"sv);
+                                }
                                 *v = std::make_shared< FunctionEnd >(varDeepth,
                                     v,
                                     varState);
@@ -1724,7 +1762,10 @@ title=\commandnumbernameone \thecommandnumber
                                     }
                                 }
                                 auto varNewSize = varString.size() - varCIndex - 1;
-                                assert(varNewSize >= 0);
+                                if (varNewSize >= 0) {
+                                } else {
+                                    the_book_throw(u8R"(逻辑错误！)"sv);
+                                }
                                 varString = varString.right(varNewSize);
                             }
 
@@ -1748,6 +1789,7 @@ title=\commandnumbernameone \thecommandnumber
         auto & varData = currentParseState->data;
 
         auto varAns = varData.emplace(varPos);
+        currentParseState->line_number = (*varPos)->line_number;
 
         if (varKey.name == theBookReadCommandFileSouce()) {
             auto varValue =
@@ -1817,7 +1859,10 @@ title=\commandnumbernameone \thecommandnumber
             *varAns = varValue;
         }
 
-        assert(*varAns);
+        if (*varAns) {
+        } else {
+            the_book_throw(u8R"(逻辑错误！)"sv);
+        }
         return varAns;
 
     }
@@ -1836,7 +1881,10 @@ title=\commandnumbernameone \thecommandnumber
                 ++varLeftCount;
             }
         }
-        assert(varLeftCount >= varRightCount);
+        if (varLeftCount >= varRightCount) {
+        } else {
+            the_book_throw(u8R"(逻辑错误！)"sv);
+        }
         return (varLeftCount - varRightCount);
     }
 
@@ -1991,10 +2039,14 @@ title=\commandnumbernameone \thecommandnumber
                     get_function_deepth(varPos);
 
                 if (varKey->argc > 0) {
-                    assert(varKeyCount == 1);
+                    if (varKeyCount == 1) {
+                    } else {
+                        the_book_throw(u8R"(逻辑错误！)"sv);
+                    }
                     Item::item_list_pos varNewPos;
                     if (varIndex) {/*插入左边的内容*/
                         auto v = varData.emplace(varPos);
+                        varState->line_number = (*varPos)->line_number;
                         auto varItem =
                             std::make_shared< ProgramString >(
                                 varProgram->data.left(varIndex),
@@ -2013,6 +2065,7 @@ title=\commandnumbernameone \thecommandnumber
                     Item::item_list_pos varNewPos;
                     if (varIndex) {/*插入左边的内容*/
                         auto v = varData.emplace(varPos);
+                        varState->line_number = (*varPos)->line_number;
                         auto varItem =
                             std::make_shared< ProgramString >(
                                 varProgram->data.left(varIndex),
@@ -2029,7 +2082,10 @@ title=\commandnumbernameone \thecommandnumber
                         varDataString.size() -
                         varIndex -
                         varKey->name.size();
-                    assert(varNewSize >= 0);
+                    if (varNewSize >= 0) {
+                    } else {
+                        the_book_throw(u8R"(逻辑错误！)"sv);
+                    }
                     varDataString = varDataString.right(varNewSize);
                     if (varDataString.isEmpty()) {
                         /*删除空节点*/
@@ -2064,7 +2120,10 @@ title=\commandnumbernameone \thecommandnumber
                     auto varItem = *varPos;
                     auto varCurrentDeepth1 =
                         static_cast<FunctionOp *>(varItem.get())->deepth;
-                    assert(varCurrentDeepth >= varCurrentDeepth1);
+                    if (varCurrentDeepth >= varCurrentDeepth1) {
+                    } else {
+                        the_book_throw(u8R"(逻辑错误！)"sv);
+                    }
                     if (varCurrentDeepth == varCurrentDeepth1) {
                         if (false == varItem->toRawString(&varPos)) {
                             return false;
@@ -2108,8 +2167,14 @@ title=\commandnumbernameone \thecommandnumber
             while (varPos != varParseState->data.cend()) {
                 auto varI = *varPos;
                 const auto varCurrentType1 = varI->getType();
-                assert(varCurrentType1 != Item::Type::TypeFunctionEnd);
-                assert(varCurrentType1 != Item::Type::TypeFunctionStart);
+                if (varCurrentType1 != Item::Type::TypeFunctionEnd) {
+                } else {
+                    the_book_throw(u8R"(逻辑错误！)"sv);
+                }
+                if (varCurrentType1 != Item::Type::TypeFunctionStart) {
+                } else {
+                    the_book_throw(u8R"(逻辑错误！)"sv);
+                }
                 if (varCurrentType1 != Item::Type::TypeRawString) {
                     isAllRaw = false;
                     if (varI->toRawString(&varPos) == false) {
