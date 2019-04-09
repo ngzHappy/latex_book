@@ -116,6 +116,10 @@ namespace _the_book_detail {
 #define the_book_throw(...) ::_the_book_detail::\uacf1_assert_throw(std::string_view( __FILE__),std::string_view(__func__),__LINE__ ,__VA_ARGS__)
 #endif
 
+#ifndef the_book_assert
+#define the_book_assert(\uaca1,...) if( \uaca1 ){}else{ the_book_throw(__VA_ARGS__); }               
+#endif
+
 template<typename T>
 inline static void outputHeader(T && o) {
 

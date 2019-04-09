@@ -567,7 +567,7 @@ public:
 \caption{%1}\label{%2} %表标题
 \end{longtable}
 %end表
-)").arg(varCaption).arg(varKeyLabel) ;
+)").arg(varCaption).arg(varKeyLabel);
                     {
                         const QDir varDir{ varDirPath };
                         varTableFullPath =
@@ -1011,7 +1011,7 @@ title=\commandnumbernameone \thecommandnumber
                 const bool varDoNotPutFrame =
                     varImagePathRaw.startsWith(QChar('&'));
                 if (varDoNotPutFrame) {
-                    varImagePathRaw.remove(0,1);
+                    varImagePathRaw.remove(0, 1);
                 }
 
                 /*进行图片转换...*/
@@ -1022,7 +1022,7 @@ title=\commandnumbernameone \thecommandnumber
                 bool varIsImageConverted = false;
                 if (varImageConvert.needConvert()) {
                     varIsImageConverted =
-                    varImageConvert.convert();
+                        varImageConvert.convert();
                 }
 
                 {
@@ -1054,7 +1054,7 @@ title=\commandnumbernameone \thecommandnumber
                     varString += qsl(R"(\setlength\fboxsep{0pt}\fcolorbox[rgb]{0,0,0}{0.97,0.98,0.99}{)")/*1*/;
                 }
                 varString += qsl(R"(\includegraphics%1{)").arg(varArgs2[3]);
-                varString += varIsImageConverted? varImageConvert.getRelativePath() : varImagePathRaw ;
+                varString += varIsImageConverted ? varImageConvert.getRelativePath() : varImagePathRaw;
                 if (!varDoNotPutFrame) {
                     varString += qsl(R"(})")/*1*/;
                 }
@@ -1577,10 +1577,7 @@ title=\commandnumbernameone \thecommandnumber
 
                         const auto varNewSize = varLine.size() - varPos;
                         varLine = varLine.right(varNewSize);
-                        if (varLine.size() == varNewSize) {
-                        } else {
-                            the_book_throw(u8R"(逻辑错误！)"sv);
-                        }
+                        the_book_assert(varLine.size() == varNewSize,u8R"(逻辑错误！)"sv) ;
                         goto pass_next_l;
 
                     }
@@ -1631,10 +1628,7 @@ title=\commandnumbernameone \thecommandnumber
                     static_cast<ProgramString *>(varItemRaw.get());
 
                 auto varString = varProgram->data;
-                if (false == varString.isEmpty()) {
-                } else {
-                    the_book_throw(u8R"(字符串为空！)"sv);
-                }
+                the_book_assert (false == varString.isEmpty(),u8R"(字符串为空！)"sv);
 
                 const static auto varLeftExp = QRegularExpression(qsl(R"(\s*\[=*\[)"));
                 const static auto varRightExp = QRegularExpression(qsl(R"(\]=*\])"));
@@ -1705,10 +1699,8 @@ title=\commandnumbernameone \thecommandnumber
                                 auto v = varData.emplace(varPos);
                                 varState->line_number = (*varPos)->line_number;
                                 auto varDeepth = varStartOpCount - varEndOpCount;
-                                if (varDeepth >= 0) {
-                                } else {
-                                    the_book_throw(u8R"(逻辑错误！)"sv);
-                                }
+                                the_book_assert (varDeepth >= 0 ,u8R"(逻辑错误！)"sv);
+ 
                                 *v = std::make_shared< FunctionStart >(varDeepth,
                                     v,
                                     varState);
@@ -1725,10 +1717,7 @@ title=\commandnumbernameone \thecommandnumber
                                 auto v = varData.emplace(varPos);
                                 varState->line_number = (*varPos)->line_number;
                                 auto varDeepth = varStartOpCount - varEndOpCount;
-                                if (varDeepth >= 0) {
-                                } else {
-                                    the_book_throw(u8R"(逻辑错误！)"sv);
-                                }
+                                the_book_assert(varDeepth >= 0 ,u8R"(逻辑错误！)"sv);
                                 *v = std::make_shared< FunctionEnd >(varDeepth,
                                     v,
                                     varState);
@@ -1762,10 +1751,7 @@ title=\commandnumbernameone \thecommandnumber
                                     }
                                 }
                                 auto varNewSize = varString.size() - varCIndex - 1;
-                                if (varNewSize >= 0) {
-                                } else {
-                                    the_book_throw(u8R"(逻辑错误！)"sv);
-                                }
+                                the_book_assert( (varNewSize >= 0) , u8R"(逻辑错误！)"sv);
                                 varString = varString.right(varNewSize);
                             }
 
@@ -1859,10 +1845,7 @@ title=\commandnumbernameone \thecommandnumber
             *varAns = varValue;
         }
 
-        if (*varAns) {
-        } else {
-            the_book_throw(u8R"(逻辑错误！)"sv, currentParseState->line_number);
-        }
+        the_book_assert( (*varAns) ,u8R"(逻辑错误！)"sv, currentParseState->line_number);
         return varAns;
 
     }
@@ -1881,10 +1864,7 @@ title=\commandnumbernameone \thecommandnumber
                 ++varLeftCount;
             }
         }
-        if (varLeftCount >= varRightCount) {
-        } else {
-            the_book_throw(u8R"(逻辑错误！)"sv,(*arg)->line_number);
-        }
+        the_book_assert( (varLeftCount >= varRightCount) ,u8R"(逻辑错误！)"sv, (*arg)->line_number);
         return (varLeftCount - varRightCount);
     }
 
@@ -2039,10 +2019,7 @@ title=\commandnumbernameone \thecommandnumber
                     get_function_deepth(varPos);
 
                 if (varKey->argc > 0) {
-                    if (varKeyCount == 1) {
-                    } else {
-                        the_book_throw(u8R"(逻辑错误！)"sv, (*varPos)->line_number);
-                    }
+                    the_book_assert( (varKeyCount == 1) ,u8R"(逻辑错误！)"sv, (*varPos)->line_number);
                     Item::item_list_pos varNewPos;
                     if (varIndex) {/*插入左边的内容*/
                         auto v = varData.emplace(varPos);
@@ -2082,10 +2059,7 @@ title=\commandnumbernameone \thecommandnumber
                         varDataString.size() -
                         varIndex -
                         varKey->name.size();
-                    if (varNewSize >= 0) {
-                    } else {
-                        the_book_throw(u8R"(逻辑错误！)"sv, varState->line_number);
-                    }
+                    the_book_assert( (varNewSize >= 0) ,u8R"(逻辑错误！)"sv, varState->line_number);
                     varDataString = varDataString.right(varNewSize);
                     if (varDataString.isEmpty()) {
                         /*删除空节点*/
@@ -2120,10 +2094,7 @@ title=\commandnumbernameone \thecommandnumber
                     auto varItem = *varPos;
                     auto varCurrentDeepth1 =
                         static_cast<FunctionOp *>(varItem.get())->deepth;
-                    if (varCurrentDeepth >= varCurrentDeepth1) {
-                    } else {
-                        the_book_throw(u8R"(逻辑错误！)"sv, varState->line_number);
-                    }
+                    the_book_assert( (varCurrentDeepth >= varCurrentDeepth1) ,u8R"(逻辑错误！)"sv, varState->line_number);
                     if (varCurrentDeepth == varCurrentDeepth1) {
                         if (false == varItem->toRawString(&varPos)) {
                             return false;
@@ -2167,14 +2138,10 @@ title=\commandnumbernameone \thecommandnumber
             while (varPos != varParseState->data.cend()) {
                 auto varI = *varPos;
                 const auto varCurrentType1 = varI->getType();
-                if (varCurrentType1 != Item::Type::TypeFunctionEnd) {
-                } else {
-                    the_book_throw(u8R"(逻辑错误！)"sv, varI->line_number);
-                }
-                if (varCurrentType1 != Item::Type::TypeFunctionStart) {
-                } else {
-                    the_book_throw(u8R"(逻辑错误！)"sv, varI->line_number);
-                }
+
+                the_book_assert(varCurrentType1 != Item::Type::TypeFunctionEnd, u8R"(逻辑错误！)"sv, varI->line_number);
+                the_book_assert(varCurrentType1 != Item::Type::TypeFunctionStart, u8R"(逻辑错误！)"sv, varI->line_number);
+
                 if (varCurrentType1 != Item::Type::TypeRawString) {
                     isAllRaw = false;
                     if (varI->toRawString(&varPos) == false) {
