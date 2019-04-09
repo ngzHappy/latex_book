@@ -1861,7 +1861,7 @@ title=\commandnumbernameone \thecommandnumber
 
         if (*varAns) {
         } else {
-            the_book_throw(u8R"(逻辑错误！)"sv);
+            the_book_throw(u8R"(逻辑错误！)"sv, currentParseState->line_number);
         }
         return varAns;
 
@@ -1883,7 +1883,7 @@ title=\commandnumbernameone \thecommandnumber
         }
         if (varLeftCount >= varRightCount) {
         } else {
-            the_book_throw(u8R"(逻辑错误！)"sv);
+            the_book_throw(u8R"(逻辑错误！)"sv,(*arg)->line_number);
         }
         return (varLeftCount - varRightCount);
     }
@@ -2041,7 +2041,7 @@ title=\commandnumbernameone \thecommandnumber
                 if (varKey->argc > 0) {
                     if (varKeyCount == 1) {
                     } else {
-                        the_book_throw(u8R"(逻辑错误！)"sv);
+                        the_book_throw(u8R"(逻辑错误！)"sv, (*varPos)->line_number);
                     }
                     Item::item_list_pos varNewPos;
                     if (varIndex) {/*插入左边的内容*/
@@ -2084,7 +2084,7 @@ title=\commandnumbernameone \thecommandnumber
                         varKey->name.size();
                     if (varNewSize >= 0) {
                     } else {
-                        the_book_throw(u8R"(逻辑错误！)"sv);
+                        the_book_throw(u8R"(逻辑错误！)"sv, varState->line_number);
                     }
                     varDataString = varDataString.right(varNewSize);
                     if (varDataString.isEmpty()) {
@@ -2122,7 +2122,7 @@ title=\commandnumbernameone \thecommandnumber
                         static_cast<FunctionOp *>(varItem.get())->deepth;
                     if (varCurrentDeepth >= varCurrentDeepth1) {
                     } else {
-                        the_book_throw(u8R"(逻辑错误！)"sv);
+                        the_book_throw(u8R"(逻辑错误！)"sv, varState->line_number);
                     }
                     if (varCurrentDeepth == varCurrentDeepth1) {
                         if (false == varItem->toRawString(&varPos)) {
@@ -2169,11 +2169,11 @@ title=\commandnumbernameone \thecommandnumber
                 const auto varCurrentType1 = varI->getType();
                 if (varCurrentType1 != Item::Type::TypeFunctionEnd) {
                 } else {
-                    the_book_throw(u8R"(逻辑错误！)"sv);
+                    the_book_throw(u8R"(逻辑错误！)"sv, varI->line_number);
                 }
                 if (varCurrentType1 != Item::Type::TypeFunctionStart) {
                 } else {
-                    the_book_throw(u8R"(逻辑错误！)"sv);
+                    the_book_throw(u8R"(逻辑错误！)"sv, varI->line_number);
                 }
                 if (varCurrentType1 != Item::Type::TypeRawString) {
                     isAllRaw = false;
