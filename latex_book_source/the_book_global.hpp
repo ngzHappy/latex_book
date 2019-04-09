@@ -71,6 +71,7 @@ namespace _the_book_detail {
     template<typename T>
     inline void \uacf2_print(QTextStream & o, T && arg) {
         using U = std::remove_cv_t< std::remove_reference_t<T> >;
+        o << QLatin1Literal(" ");
         if constexpr (std::is_same_v<U, std::string_view >) {
             if (arg.empty()) {
                 return;
