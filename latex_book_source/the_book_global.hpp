@@ -66,6 +66,8 @@ line:)"sv;
 
 }
 
+#ifndef Q_MOC_RUN
+
 namespace _the_book_detail {
 
     template<typename T>
@@ -87,7 +89,7 @@ namespace _the_book_detail {
     }
 
     template<typename ... T>
-    inline void _assert_throw(
+    inline void \uacf1_assert_throw(
         const std::string_view & a,
         const std::string_view & b,
         int c,
@@ -107,20 +109,23 @@ namespace _the_book_detail {
 
 }/*_the_book_detail*/
 
+
+#ifndef the_book_throw
+#define the_book_throw(...) ::_the_book_detail::\uacf1_assert_throw(std::string_view( __FILE__),std::string_view(__func__),__LINE__ ,__VA_ARGS__)
+#endif
+
+#ifndef the_book_assert
+#define the_book_assert(\uacc1,...) if( \uacc1 ){}else{ the_book_throw(__VA_ARGS__); }
+#endif
+
+#endif/*~Q_MOC_RUN*/
+
 #ifndef qsl
 #define qsl QStringLiteral
 #endif
 
 #ifndef qbl
 #define qbl QByteArrayLiteral
-#endif
-
-#ifndef the_book_throw
-#define the_book_throw(...) ::_the_book_detail::_assert_throw(std::string_view( __FILE__),std::string_view(__func__),__LINE__ ,__VA_ARGS__)
-#endif
-
-#ifndef the_book_assert
-#define the_book_assert(_key1,...) if( _key1 ){}else{ the_book_throw(__VA_ARGS__); }
 #endif
 
 template<typename T>
