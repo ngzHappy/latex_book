@@ -71,9 +71,10 @@ namespace _the_book_detail {
     template<typename T>
     inline void \uacf2_print(QTextStream & o, T && arg) {
         using U = std::remove_cv_t< std::remove_reference_t<T> >;
-        o << QLatin1Literal(" ");
+
         if constexpr (std::is_same_v<U, std::string_view >) {
             if (arg.empty()) {
+                (void)o;
                 return;
             }
             o << QString::fromUtf8(arg.data(), static_cast<int>(arg.size()));
@@ -81,10 +82,12 @@ namespace _the_book_detail {
             o << arg;
         }
 
+        o << QLatin1Literal(" ");
+
     }
 
     template<typename ... T>
-    inline void \uacf1_assert_throw(
+    inline void _assert_throw(
         const std::string_view & a,
         const std::string_view & b,
         int c,
@@ -113,11 +116,11 @@ namespace _the_book_detail {
 #endif
 
 #ifndef the_book_throw
-#define the_book_throw(...) ::_the_book_detail::\uacf1_assert_throw(std::string_view( __FILE__),std::string_view(__func__),__LINE__ ,__VA_ARGS__)
+#define the_book_throw(...) ::_the_book_detail::_assert_throw(std::string_view( __FILE__),std::string_view(__func__),__LINE__ ,__VA_ARGS__)
 #endif
 
 #ifndef the_book_assert
-#define the_book_assert(\uaca1,...) if( \uaca1 ){}else{ the_book_throw(__VA_ARGS__); }               
+#define the_book_assert(_key1,...) if( _key1 ){}else{ the_book_throw(__VA_ARGS__); }
 #endif
 
 template<typename T>

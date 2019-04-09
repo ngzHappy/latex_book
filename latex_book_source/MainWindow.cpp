@@ -25,6 +25,16 @@ public:
             auto varSelectFileButton = new QPushButton;
             varHLayout->addWidget(varSelectFileButton);
             varSelectFileButton->setText(trUtf8(u8R"(选择目录)"));
+            QObject::connect(varSelectFileButton, &QPushButton::clicked, 
+                varSelectFileButton,[this]() {
+                auto varAns = QFileDialog::getExistingDirectory(nullptr,
+                    trUtf8( u8"选择包含 main_index.txt 和 the_book_constexpr.txt 的目录" ),
+                    this->text->text());
+                if ( varAns.isEmpty() ) {
+                    return;
+                }
+                this->text->setText( varAns );
+            });
             varLayout->addLayout(varHLayout);
             varTextInput->setText(QDir::currentPath());
             text = varTextInput;
