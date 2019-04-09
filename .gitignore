@@ -48,3 +48,4 @@ release/
 *.vcxproj*
 
 
+*.sln
