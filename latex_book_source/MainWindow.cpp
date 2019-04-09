@@ -5,6 +5,7 @@ class CenterWidget :
     public QWidget {
     MainWindow * const super;
     QPushButton * button;
+    QLineEdit * text;
 public:
     inline CenterWidget(MainWindow * arg) :
         super(arg) {
@@ -12,12 +13,30 @@ public:
         button = varButton;
         auto varLayout = new QVBoxLayout;
         this->setLayout(varLayout);
-        varButton->setMaximumWidth(256);
         varButton->setMinimumHeight(64);
+        {
+            varLayout->addSpacerItem(new QSpacerItem(1, 0,
+                QSizePolicy::Minimum, QSizePolicy::Expanding));
+        }
+        {
+            auto varHLayout = new QHBoxLayout;
+            auto varTextInput = new QLineEdit;
+            varHLayout->addWidget(varTextInput);
+            auto varSelectFileButton = new QPushButton;
+            varHLayout->addWidget(varSelectFileButton);
+            varSelectFileButton->setText(trUtf8(u8R"(选择目录)"));
+            varLayout->addLayout(varHLayout);
+            varTextInput->setText(QDir::currentPath());
+            text = varTextInput;
+        }
         {
             auto varHLayout = new QHBoxLayout;
             varHLayout->addWidget(varButton);
             varLayout->addLayout(varHLayout);
+        }
+        {
+            varLayout->addSpacerItem(new QSpacerItem(1, 0,
+                QSizePolicy::Minimum, QSizePolicy::Expanding));
         }
         connect(
             varButton, &QPushButton::clicked,
@@ -33,7 +52,7 @@ public:
 
     inline void _rebuild() try {
 
-        output_main_index();
+        output_main_index(text->text());
 
     } catch (...) {
 

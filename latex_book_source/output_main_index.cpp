@@ -130,7 +130,11 @@ namespace {
 }
 
 /*输出主文件目录*/
-extern void output_main_index() try {
+extern void output_main_index(const QString & varRootDir) try {
+
+    {
+        setOutPutFileDir(varRootDir);
+    }
 
     {   /*创建MakeFile.txt*/
         CreateMakeFile varCreateMakeFile;
