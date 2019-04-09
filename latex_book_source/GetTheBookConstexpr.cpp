@@ -10,7 +10,7 @@ inline static GetTheBookConstexpr::data_type _get_data() {
 
     const static auto varFileName =
         getOutPutFileFullPath(
-            qsl("TheBookSources/the_book_constexpr.txt"));
+            qsl("the_book_constexpr.txt"));
 
     thread_local LastReturn varLastReturn;
 
@@ -18,7 +18,7 @@ inline static GetTheBookConstexpr::data_type _get_data() {
         /*如果文件被修改则更新值...*/
         QFileInfo varFileInfo{ varFileName };
         if (varFileInfo.exists() == false) {
-            the_book_throw("can not find the file"sv);
+            the_book_throw("can not find the file the_book_constexpr.txt"sv);
         }
 
         if (!varLastReturn.data) {
@@ -35,7 +35,7 @@ inline static GetTheBookConstexpr::data_type _get_data() {
 
     QFile varFile{ varFileName };
     if (false == varFile.open(QIODevice::ReadOnly)) {
-        the_book_throw("can not open the file"sv);
+        the_book_throw("can not open the file the_book_constexpr.txt"sv);
     }
     InputStream varStream{ &varFile };
 
