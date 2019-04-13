@@ -278,7 +278,7 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %………………在这里加入你的内容………………
-%\input{foreword/foreword.tex}     %前言
+\input{foreword/foreword.tex}     %前言
 
 
 \cleardoublepage                              %增加空白页
