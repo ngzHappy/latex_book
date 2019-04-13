@@ -138,6 +138,10 @@ extern void output_main_index(const QString & varRootDir) try {
         setOutPutFileDir(varRootDir);
     }
 
+    {
+        tryCreateDefaultProjcet();
+    }
+
     {   /*创建MakeFile.txt*/
         CreateMakeFile varCreateMakeFile;
         varCreateMakeFile.createMakeFile();
