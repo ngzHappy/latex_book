@@ -362,6 +362,8 @@ extern void tryCreateDefaultProjcet(){
         varFile.write( the_book_constexpr_txt.data(),the_book_constexpr_txt.size() );
     }
 
+    varDir.mkdir( QStringLiteral("the_book_image") );
+
 }
 
 
