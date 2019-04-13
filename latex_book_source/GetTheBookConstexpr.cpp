@@ -4,17 +4,19 @@ class LastReturn {
 public:
     GetTheBookConstexpr::data_type data;
     QDateTime lastModified;
+    QString lastFileName;
 };
 
 inline static GetTheBookConstexpr::data_type _get_data() {
 
-    const static auto varFileName =
+    const auto varFileName =
         getOutPutFileFullPath(
             qsl("the_book_constexpr.txt"));
 
     thread_local LastReturn varLastReturn;
 
     do {
+
         /*如果文件被修改则更新值...*/
         QFileInfo varFileInfo{ varFileName };
         if (varFileInfo.exists() == false) {
@@ -25,10 +27,12 @@ inline static GetTheBookConstexpr::data_type _get_data() {
             break;
         }
 
-        if (varLastReturn.lastModified == varFileInfo.lastModified()) {
+        if ((varLastReturn.lastModified == varFileInfo.lastModified())
+            &&(varLastReturn.lastFileName==varFileName)) {
             return varLastReturn.data;
         } else {
             varLastReturn.lastModified = varFileInfo.lastModified();
+            varLastReturn.lastFileName = varFileName;
         }
 
     } while (false);

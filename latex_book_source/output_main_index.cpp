@@ -129,6 +129,8 @@ namespace {
     };
 }
 
+extern void tryCreateDefaultProjcet();
+
 /*输出主文件目录*/
 extern void output_main_index(const QString & varRootDir) try {
 

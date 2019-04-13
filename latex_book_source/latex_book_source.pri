@@ -35,3 +35,5 @@ SOURCES += $$PWD/CreateMakeFile.cpp
 SOURCES += $$PWD/UpdateKeyWords.cpp
 SOURCES += $$PWD/TheBookDir.cpp
 
+SOURCES += $$PWD/TryCreateDefaultProject.cpp
+
