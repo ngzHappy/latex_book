@@ -284,6 +284,7 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \input{chapter02/chapter02.tex}   %测试2
 \input{chapter03/chapter03.tex}   %测试3
 \input{chapter04/chapter04.tex}   %测试4
+\input{chapter05/chapter05.tex}   %测试5
 
 \cleardoublepage                              %增加空白页
 \CTEXsetup[format={\bfseries\raggedright}]{section} %section左对齐
