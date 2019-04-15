@@ -24,20 +24,3 @@ CONFIG(debug,debug|release) {
 !win32 {
     QMAKE_LFLAGS += -Wl,-rpath .
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

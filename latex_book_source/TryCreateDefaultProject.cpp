@@ -365,23 +365,3 @@ extern void tryCreateDefaultProjcet(){
     varDir.mkdir( QStringLiteral("the_book_image") );
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

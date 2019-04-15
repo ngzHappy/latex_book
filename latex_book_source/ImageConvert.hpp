@@ -19,10 +19,3 @@ public:
         return output_image_relative_path;
     }
 };
-
-
-
-
-
-
-

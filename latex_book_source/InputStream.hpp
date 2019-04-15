@@ -29,6 +29,3 @@ public:
     InputStream&operator=(InputStream&&)=delete;
 
 };
-
-
-

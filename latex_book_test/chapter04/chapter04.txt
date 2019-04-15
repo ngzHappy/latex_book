@@ -44,4 +44,3 @@ tree > dir.txt
 % \hspace*{\parindent}
 % FloatBarrier
 ]]
-
