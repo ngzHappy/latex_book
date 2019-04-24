@@ -38,19 +38,15 @@ public:
             varLayout->addLayout(varHLayout);
             const auto varStarupFile = []() {
                 QDir varDir{ qApp->applicationDirPath() };
-                if (varDir.cd("app_startup")) {
-                    return varDir.absoluteFilePath("path.txt");
-                } else {
-                    return QString{};
-                }
-            }() ;
+                return varDir.absoluteFilePath("app_startup/path.txt");
+            }();
             if (QFileInfo::exists(varStarupFile)) {
                 QFile varFile{ varStarupFile };
                 varFile.open(QIODevice::ReadOnly);
                 QTextStream varStream{ &varFile };
                 varTextInput->setText(varStream.readAll().trimmed());
             } else {
-                qWarning()<<"can not find : " << varStarupFile;
+                qWarning() << "can not find : " << varStarupFile;
                 varTextInput->setText(QDir::currentPath());
             }
             text = varTextInput;
