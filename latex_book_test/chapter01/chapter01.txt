@@ -3,19 +3,21 @@
 
 :the_book_section:[[c2019131700]]
 
-:tex_raw:[[
 
-\figurename\ref{c2019131700}
+最公平的比赛用文本就是随机文本:tex_raw:[[\refTheBookFigure{c2019131700}]]最公平的比赛用文本就是随机文本
+最公平的比赛用文本就是随机文本
 
-\tablename\ref{c2019131703}
+最公平的比赛用文本就是随机文本:tex_raw:[[\refTheBookTable{c2019131703}]]最公平的比赛用文本就是随机文本
+最公平的比赛用文本就是随机文本
 
-\filesourcenumbernameone\ref{c2019131724}
+最公平的比赛用文本就是随机文本:tex_raw:[[\refTheBookFileSource{c2019131724}]]最公平的比赛用文本就是随机文本
+最公平的比赛用文本就是随机文本
 
-\treeindexnumbernameone\ref{c2019131736}
+最公平的比赛用文本就是随机文本:tex_raw:[[\refTheBookTreeIndex{c2019131736}]]最公平的比赛用文本就是随机文本
+最公平的比赛用文本就是随机文本
 
-\commandnumbernameone\ref{c2019131804}
-
-]]
+最公平的比赛用文本就是随机文本:tex_raw:[[\refTheBookCommand{c2019131804}]]最公平的比赛用文本就是随机文本
+最公平的比赛用文本就是随机文本
 
 
 在文字录入比赛（打字比赛）中，

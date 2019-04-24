@@ -133,6 +133,9 @@ belowcaptionskip=5pt
 \title{Qt Quick全面导引}                              %书籍名称
 \author{Good Luck}                                   %作者名
 
+%下划线
+\usepackage{ulem}
+
 %设置ctex
 %@P135
 \CTEXsetup[ number={ \arabic{chapter} } ]{chapter}
@@ -248,13 +251,13 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \setlength{\textfloatsep}{10pt plus 2pt minus 2pt}
 \setlength{\intextsep}{10pt plus 2pt minus 2pt}
 
-\newcommand{\refTheBookFigure}[1]{\figurename\ref{#1}}
-\newcommand{\refTheBookTable}[1]{\tablename\ref{#1}}
-\newcommand{\refTheBookFileSource}[1]{\filesourcenumbernameone\ref{#1}}
-\newcommand{\refTheBookTreeIndex}[1]{\treeindexnumbernameone\ref{#1}}
-\newcommand{\refTheBookCommand}[1]{\commandnumbernameone\ref{#1}}
-\newcommand{\refTheBookChapter}[1]{第\ref{#1}章}
-\newcommand{\refTheBookSection}[1]{第\ref{#1}节}
+\newcommand{\refTheBookFigure}[1]{\uwave{\figurename\ref{#1}}}
+\newcommand{\refTheBookTable}[1]{\uwave{\tablename\ref{#1}}}
+\newcommand{\refTheBookFileSource}[1]{\uwave{\filesourcenumbernameone\ref{#1}}}
+\newcommand{\refTheBookTreeIndex}[1]{\uwave{\treeindexnumbernameone\ref{#1}}}
+\newcommand{\refTheBookCommand}[1]{\uwave{\commandnumbernameone\ref{#1}}}
+\newcommand{\refTheBookChapter}[1]{\uwave{第\ref{#1}章}}
+\newcommand{\refTheBookSection}[1]{\uwave{第\ref{#1}节}}
 
 \begin{document}
 
