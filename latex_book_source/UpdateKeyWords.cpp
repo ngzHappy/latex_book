@@ -81,6 +81,8 @@ extern bool updateKeywords(const QString & argFullPath) {
 % figurename tablename filesourcenumbernameone
 % treeindexnumbernameone commandnumbernameone footnote
 % item itemize comment textbullet
+% refTheBookFigure refTheBookTable refTheBookFileSource
+% refTheBookTreeIndex refTheBookCommand refTheBookChapter refTheBookSection
 % \hspace*{\parindent}
 % FloatBarrier
 ]]
