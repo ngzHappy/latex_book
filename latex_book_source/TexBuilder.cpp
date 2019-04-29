@@ -22,7 +22,30 @@ _insertKey()
 *****/
 
 /*find max * between ( @ or @ )*/
-static inline int getMaxStartCount(const QString & arg) {
+static inline int getMaxStartCount(const QString & arg, const QString & argTheFileName) {
+
+    do {
+        const auto varThisFileName = argTheFileName.trimmed() + QStringLiteral(".nlatex");
+        QFileInfo varFileInfo{ varThisFileName };
+        if (varFileInfo.exists() && (!varFileInfo.isDir())) {
+            QFile varFile{ varThisFileName };
+            if (!varFile.open(QIODevice::ReadOnly)) {
+                break;
+            }
+            QTextStream varStream{ &varFile };
+            int varAns{ 0 };
+            varStream >> varAns;
+            if (varAns > 0) {
+                varAns -= 1;
+            } else {
+                the_book_assert(false, QStringLiteral("read error from : "), argTheFileName);
+                break;
+            }
+            return varAns;
+        } else {
+            break;
+        }
+    } while (false);
 
     if (arg.size() < 3) {
         return 0;
@@ -712,8 +735,8 @@ public:
                 QString varLeftKey = QStringLiteral(R"((%1@)");
                 QString varRightKey = QStringLiteral(R"(@%1))");
                 {
-                    const auto varSources =
-                        readFileSource(getOutPutFileFullPath(varArgs2[0]));
+                    const auto varThisFileName = getOutPutFileFullPath(varArgs2[0]);
+                    const auto varSources = readFileSource(varThisFileName);
                     for (const auto & varLine : varSources) {
                         varFullFile += varLine;
                         varFullFile += QChar('\n');
@@ -721,7 +744,7 @@ public:
                     if (!varFullFile.isEmpty()) {
                         varFullFile.chop(1);
                     }
-                    const auto varStarSize = 1 + getMaxStartCount(varFullFile);
+                    const auto varStarSize = 1 + getMaxStartCount(varFullFile, varThisFileName);
                     const QString varStars{ varStarSize,QChar('*') };
                     varLeftKey = varLeftKey.arg(varStars);
                     varRightKey = varRightKey.arg(varStars);
@@ -809,8 +832,8 @@ title=\filesourcenumbernameone \thefilesourcenumber
                 QString varLeftKey = QStringLiteral(R"((%1@)");
                 QString varRightKey = QStringLiteral(R"(@%1))");
                 {
-                    const auto varSources =
-                        readFileSource(getOutPutFileFullPath(varArgs2[0]));
+                    const auto varThisFileName = getOutPutFileFullPath(varArgs2[0]);
+                    const auto varSources = readFileSource(varThisFileName);
                     for (const auto & varLine : varSources) {
                         varFullFile += varLine;
                         varFullFile += QChar('\n');
@@ -818,7 +841,7 @@ title=\filesourcenumbernameone \thefilesourcenumber
                     if (!varFullFile.isEmpty()) {
                         varFullFile.chop(1);
                     }
-                    const auto varStarSize = 1 + getMaxStartCount(varFullFile);
+                    const auto varStarSize = 1 + getMaxStartCount(varFullFile, varThisFileName);
                     const QString varStars{ varStarSize,QChar('*') };
                     varLeftKey = varLeftKey.arg(varStars);
                     varRightKey = varRightKey.arg(varStars);
@@ -906,8 +929,8 @@ title=\treeindexnumbernameone \thetreeindexnumber
                 QString varLeftKey = QStringLiteral(R"((%1@)");
                 QString varRightKey = QStringLiteral(R"(@%1))");
                 {
-                    const auto varSources =
-                        readFileSource(getOutPutFileFullPath(varArgs2[0]));
+                    const auto varThisFileName = getOutPutFileFullPath(varArgs2[0]);
+                    const auto varSources = readFileSource(varThisFileName);
                     for (const auto & varLine : varSources) {
                         varFullFile += varLine;
                         varFullFile += QChar('\n');
@@ -915,7 +938,7 @@ title=\treeindexnumbernameone \thetreeindexnumber
                     if (!varFullFile.isEmpty()) {
                         varFullFile.chop(1);
                     }
-                    const auto varStarSize = 1 + getMaxStartCount(varFullFile);
+                    const auto varStarSize = 1 + getMaxStartCount(varFullFile, varThisFileName);
                     const QString varStars{ varStarSize,QChar('*') };
                     varLeftKey = varLeftKey.arg(varStars);
                     varRightKey = varRightKey.arg(varStars);

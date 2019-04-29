@@ -2,5 +2,5 @@
 #include <iostream>
 
 int main(int,char **){
-    return 0;
+    (*****@\sout{return 0}@*****);
 }
