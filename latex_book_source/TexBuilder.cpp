@@ -30,6 +30,7 @@ static inline int getMaxStartCount(const QString & arg, const QString & argTheFi
         if (varFileInfo.exists() && (!varFileInfo.isDir())) {
             QFile varFile{ varThisFileName };
             if (!varFile.open(QIODevice::ReadOnly)) {
+                the_book_assert(false, QStringLiteral("can not open : "), argTheFileName);
                 break;
             }
             QTextStream varStream{ &varFile };
