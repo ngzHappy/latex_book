@@ -203,6 +203,7 @@ public:
 
                 QTextStream varOut{ &varFile };
                 varOut.setCodec( QTextCodec::codecForName("UTF-8") );
+                varOut.setGenerateByteOrderMark(true);
 
                 while (!varLines.empty()) {
                     if (varLines.back().isEmpty()) {
