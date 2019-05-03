@@ -85,6 +85,7 @@ extern bool updateKeywords(const QString & argFullPath) {
 % refTheBookTreeIndex refTheBookCommand refTheBookChapter refTheBookSection
 % \hspace*{\parindent}
 % FloatBarrier
+% :tex_raw:[[%the_book_insert{}]]
 ]]
 
 )!");

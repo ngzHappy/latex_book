@@ -1,4 +1,5 @@
 ﻿
+:tex_raw:[[%the_book_insert{c2019131626::::前言}]]
 :the_book_foreword:[=[c2019131626]=]
 
 在文字录入比赛（打字比赛）中，
