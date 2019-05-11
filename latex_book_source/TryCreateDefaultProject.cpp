@@ -157,35 +157,25 @@ belowcaptionskip=5pt
 \newcounter{treeindexnumber}[section]
 %\stepcounter{treeindexnumber}
 %\refstepcounter{treeindexnumber}
-\renewcommand\thetreeindexnumber{
-    \thesection.\arabic{treeindexnumber}
-}
+\renewcommand\thetreeindexnumber{\thesection.\arabic{treeindexnumber}}
 
 %设置命令计数器
 \newcommand\commandnumbernameone{命令}
 \newcounter{commandnumber}[section]
-\renewcommand\thecommandnumber{
-    \thesection.\arabic{commandnumber}
-}
+\renewcommand\thecommandnumber{\thesection.\arabic{commandnumber}}
 
 %设置源码计数器
 \newcommand\filesourcenumbernameone{源码}
 \newcounter{filesourcenumber}[section]
-\renewcommand\thefilesourcenumber{
-    \thesection.\arabic{filesourcenumber}
-}
+\renewcommand\thefilesourcenumber{\thesection.\arabic{filesourcenumber}}
 
 %设置图片计数器
 \counterwithin{figure}{section}
-\renewcommand\thefigure{
-    \thesection.\arabic{figure}
-}
+\renewcommand\thefigure{\thesection.\arabic{figure}}
 
 %设置表计数器
 \counterwithin{table}{section}
-\renewcommand\thetable{
-    \thesection.\arabic{table}
-}
+\renewcommand\thetable{\thesection.\arabic{table}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %解决目录字体重叠BUG
@@ -232,12 +222,8 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \setlength{\LTpost}{0pt}
 %\setlength{\LTpre}{0pt}
 
-\newcommand\thebookexistone{
-    \rotatebox[origin=c]{12}{\scalebox{0.65}{$\exists$}}
-}
-\newcommand\thebookallone{
-    \rotatebox[origin=c]{-6}{$\forall$}
-}
+\newcommand\thebookexistone{\rotatebox[origin=c]{12}{\scalebox{0.65}{$\exists$}}}
+\newcommand\thebookallone{\rotatebox[origin=c]{-6}{$\forall$}}
 
 %表格行距
 \renewcommand\arraystretch{0.9}
