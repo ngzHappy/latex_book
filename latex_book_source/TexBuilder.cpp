@@ -1097,6 +1097,8 @@ title=\commandnumbernameone \thecommandnumber
                 varString += qsl(R"===(\begin{tcolorbox}[arc=0pt ,
 )===");
                 varString += qsl(R"===(    boxsep=0mm ,
+    after skip=6pt,
+    before skip=4pt,
 )===");
                 varString += qsl(R"===(    top=1pt,
 )===");
