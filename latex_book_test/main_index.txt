@@ -82,7 +82,7 @@ marginparwidth=2.1cm       %边注宽度
 ]{hyperref}
 
 \usepackage{fontspec}
-\definecolor{sourcegrayone}{rgb}{0.99,0.99,0.99}  %源代码背景颜色
+\definecolor{sourcegrayone}{rgb}{0.90,0.90,0.91}  %源代码背景颜色
 \newfontfamily\sourcefontone{Consolas}            %源代码字体
 \newfontfamily\sourcefontthree{DejaVu Sans Mono}  %源代码字体
 %sudo apt-get install ttf-mscorefonts-installer   %linux安装字体
@@ -292,6 +292,7 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \input{chapter03/chapter03.tex}   %测试3
 \input{chapter04/chapter04.tex}   %测试4
 \input{chapter05/chapter05.tex}   %测试5
+\input{chapter06/chapter06.tex}   %测试6
 
 \cleardoublepage                              %增加空白页
 \CTEXsetup[format={\bfseries\raggedright}]{section} %section左对齐

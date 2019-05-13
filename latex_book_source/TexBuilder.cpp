@@ -1129,7 +1129,8 @@ title=\commandnumbernameone \thecommandnumber
                 varString += varFileSourceDataEnd;
                 varString += qsl(R"(\end{tcolorbox})");
 
-                varString += qsl(R"(%end  公式
+                varString += qsl(R"(
+%end  公式
 )");
 
                 *varAnsPos = std::make_shared<RawString>(varString, varAnsPos, state);

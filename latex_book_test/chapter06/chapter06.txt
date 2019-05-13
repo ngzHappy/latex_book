@@ -1,0 +1,27 @@
+﻿
+:tex_raw:[[%the_book_insert{c20191351::::公式测试}]]
+:tex_raw:[[%the_book_insert{c20191352::::公式测试哦}]]
+
+:the_book_chapter:[[c20191351]]
+:the_book_section:[[c20191352]]
+
+:tex_raw:[[%the_book_insert{c20191353::::chapter06/eq0.tex::::]}]]
+:the_book_eq:[[c20191353]]
+
+:tex_raw:[[
+% ______all_key_words
+% the_book_chapter the_book_subsection the_book_subsubsection
+% the_book_section the_book_image the_book_table
+% the_book_file the_book_tree_file the_book_command_file
+% the_book_eq
+% littlelongworld tabbing ref
+% figurename tablename filesourcenumbernameone
+% treeindexnumbernameone commandnumbernameone footnote
+% item itemize comment textbullet
+% refTheBookFigure refTheBookTable refTheBookFileSource
+% refTheBookTreeIndex refTheBookCommand refTheBookChapter refTheBookSection
+% \hspace*{\parindent}
+% FloatBarrier
+% :tex_raw:[=[%the_book_insert{}]=]
+]]
+
