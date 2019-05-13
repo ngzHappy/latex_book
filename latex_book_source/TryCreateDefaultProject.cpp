@@ -245,6 +245,12 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \newcommand{\refTheBookChapter}[1]{\uwave{第\ref{#1}章}}
 \newcommand{\refTheBookSection}[1]{\uwave{第\ref{#1}节}}
 
+\usepackage{tcolorbox}
+%设置公式计数器
+\newcommand\fileequalnumbernameone{公式}
+\newcounter{fileequalnumber}[section]
+\renewcommand\thefileequalnumber{\thesection.\arabic{fileequalnumber}}
+
 \begin{document}
 
 %设置标点挤压模式

@@ -351,6 +351,7 @@ public:
             TypeFileSourceString,
             TypeTable,
             TypeImageString,
+            TypeEqualString,
         };
 
         using item_list = std::list< std::shared_ptr<Item> >;
@@ -986,6 +987,142 @@ title=\commandnumbernameone \thecommandnumber
             *arg = varAnsPos;
             return true;
         }
+    };
+
+    class KeyEqualsString : public FunctionOp {
+    public:
+
+        inline KeyEqualsString(int deepthx,
+            item_list_pos p,
+            std::shared_ptr<ParseState> s)
+            :FunctionOp(deepthx, p, std::move(s)) {
+        }
+
+        Type getType() const override {
+            return Type::TypeEqualString;
+        }
+
+        bool isKeyFunction() const override {
+            return true;
+        }
+
+        bool toRawString(item_list_pos * arg) override {
+
+            /*将ans插入表*/
+            auto varAnsPos = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
+            bool isOk = false;
+            /*获得args*/
+            auto varArgsKeyPart =
+                getCallArgs(this->pos, 1, &isOk, this->state);
+            if (isOk == false) {
+                return false;
+            }
+
+            auto varArgsKey =
+                argc_to_string(varArgsKeyPart);
+
+            {
+                const GetTheBookConstexpr varConstexpr;
+                auto varString = varArgsKey[0];
+                const auto varKeyLabel =
+                    varString.trimmed();
+                auto varArgs2 =
+                    varConstexpr.getValues(varKeyLabel);
+                /*label::::path::::]*/
+                if (varArgs2.size() != 2) {
+                    return false;
+                }
+
+                const auto varEqualFileRawPath = varArgs2[0];
+                const auto varEqualFilePath = getOutPutFileFullPath(varEqualFileRawPath);
+
+                QString varFileSourceData;
+                QString varFileSourceDataBegin;
+                QString varFileSourceDataEnd;
+
+                {
+                    QFile varReadFile{ varEqualFilePath };
+                    if (!varReadFile.open(QIODevice::ReadOnly)) {
+                        return false;
+                    }
+
+                    InputStream varReadStream{ &varReadFile };
+                    varFileSourceData = varReadStream.readAll().trimmed();
+                }
+
+                {
+                    QFile varReadFile{ varEqualFilePath + qsl(".begin.txt") };
+                    if (!varReadFile.open(QIODevice::ReadOnly)) {
+                        return false;
+                    }
+
+                    InputStream varReadStream{ &varReadFile };
+                    varFileSourceDataBegin = varReadStream.readAll().trimmed();
+                }
+
+                {
+                    QFile varReadFile{ varEqualFilePath + qsl(".end.txt") };
+                    if (!varReadFile.open(QIODevice::ReadOnly)) {
+                        return false;
+                    }
+
+                    InputStream varReadStream{ &varReadFile };
+                    varFileSourceDataEnd = varReadStream.readAll().trimmed();
+                }
+
+                varString = qsl(R"(%begin 公式
+)");
+
+                varString += qsl(R"===(\centerline{\noindent\fileequalnumbernameone\ \ref{%1}})===").arg(varKeyLabel);
+                varString += qsl(R"===(\begin{tcolorbox}[arc=0pt ,
+)===");
+                varString += qsl(R"===(    boxsep=0mm ,
+)===");
+                varString += qsl(R"===(    top=1pt,
+)===");
+                varString += qsl(R"===(    bottom=1pt ,
+)===");
+                varString += qsl(R"===(    left=0pt,
+)===");
+                varString += qsl(R"===(    right=0pt,
+)===");
+                varString += qsl(R"===(    leftrule=0pt,
+)===");
+                varString += qsl(R"===(    rightrule=0pt,
+)===");
+                varString += qsl(R"===(    colback=sourcegrayone,
+)===");
+                varString += qsl(R"===(    colframe=sourcegrayone   
+)===");
+                varString += varArgs2[1].trimmed()/*]*/;
+
+                varString += qsl(R"===(\refstepcounter{fileequalnumber}\label{%1}\noindent)===").arg(varKeyLabel);
+
+                varString += varFileSourceDataBegin;
+                varString += QChar('\n');
+                varString += varFileSourceData;
+                {/*append margin ... */
+
+                }
+                varString += varFileSourceDataEnd;
+                varString += qsl(R"(\end{tcolorbox})");
+
+                varString += qsl(R"(%end  公式
+)");
+
+                *varAnsPos = std::make_shared<RawString>(varString, varAnsPos, state);
+            }
+
+            /*删除整个函数*/
+            state->data.erase(this->pos, ++varArgsKeyPart[0].second);
+            /*更新表数据*/
+            *arg = varAnsPos;
+            return true;
+
+        }
+
     };
 
     class KeyImageString : public FunctionOp {
