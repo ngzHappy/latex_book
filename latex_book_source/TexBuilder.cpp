@@ -1091,6 +1091,13 @@ title=\commandnumbernameone \thecommandnumber
                 }
 
                 varString = qsl(R"(%begin 公式
+%use \vspace{-3pt} ... if you need
+{
+    \setlength\abovedisplayskip{0pt}
+    \setlength\belowdisplayskip{0pt}
+    \setlength\abovedisplayshortskip{0pt}
+    \setlength\belowdisplayshortskip{0pt}
+    \setlength\jot{1pt}
 )");
 
                 varString += qsl(R"===(\centerline{\noindent\fileequalnumbernameone\ \ref{%1}})===").arg(varKeyLabel);
@@ -1099,6 +1106,13 @@ title=\commandnumbernameone \thecommandnumber
                 varString += qsl(R"===(    boxsep=0mm ,
     after skip=6pt,
     before skip=4pt,
+    bottomtitle=0pt,
+    toptitle=0pt,
+    titlerule=0pt,
+    bottomrule=0pt,
+    toptitle=0pt,
+    titlerule=0pt,
+    toprule=0pt,
 )===");
                 varString += qsl(R"===(    top=1pt,
 )===");
@@ -1132,6 +1146,7 @@ title=\commandnumbernameone \thecommandnumber
                 varString += qsl(R"(\end{tcolorbox})");
 
                 varString += qsl(R"(
+}
 %end  公式
 )");
 
