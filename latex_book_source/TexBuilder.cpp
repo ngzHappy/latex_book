@@ -1103,8 +1103,10 @@ title=\commandnumbernameone \thecommandnumber
                 varString += varFileSourceDataBegin;
                 varString += QChar('\n');
                 varString += varFileSourceData;
+                varString += QChar('\n');
                 {/*append margin ... */
-
+                    varString +=
+                    qsl(R"(\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\parbox{1em}{\setlength{\baselineskip}{2pt}\fileequalnumbernameone}}\footnotesize{\thefileequalnumber}}})");
                 }
                 varString += varFileSourceDataEnd;
                 varString += qsl(R"(\end{tcolorbox})");
