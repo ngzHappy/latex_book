@@ -30,6 +30,7 @@ public:
     virtual QTextStream & getDirTreeSourceIndex() const = 0;
     virtual QTextStream & getCommandSourceIndex() const = 0;
     virtual QTextStream & getTableIndex() const = 0;
+    virtual QTextStream & getEQIndex() const = 0;
 };
 
 class TexBuilder :

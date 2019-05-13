@@ -1077,6 +1077,19 @@ title=\commandnumbernameone \thecommandnumber
                     varFileSourceDataEnd = varReadStream.readAll().trimmed();
                 }
 
+                {
+                    auto & varIndexStream = state
+                        ->texBuilderPrivate
+                        ->globalSuper
+                        ->getEQIndex();
+                    varIndexStream << qsl(R"++++(\noindent\fileequalnumbernameone\ \ref{)++++");
+                    varIndexStream << varKeyLabel;
+                    varIndexStream << qsl(R"++++(}\dotfill\pageref{)++++");
+                    varIndexStream << varKeyLabel;
+                    varIndexStream << qsl(R"++++(})++++");
+                    varIndexStream << endl << endl;
+                }
+
                 varString = qsl(R"(%begin 公式
 )");
 

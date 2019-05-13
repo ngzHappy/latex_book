@@ -155,35 +155,25 @@ belowcaptionskip=5pt
 \newcounter{treeindexnumber}[section]
 %\stepcounter{treeindexnumber}
 %\refstepcounter{treeindexnumber}
-\renewcommand\thetreeindexnumber{
-    \thesection.\arabic{treeindexnumber}
-}
+\renewcommand\thetreeindexnumber{\thesection.\arabic{treeindexnumber}}
 
 %设置命令计数器
 \newcommand\commandnumbernameone{命令}
 \newcounter{commandnumber}[section]
-\renewcommand\thecommandnumber{
-    \thesection.\arabic{commandnumber}
-}
+\renewcommand\thecommandnumber{\thesection.\arabic{commandnumber}}
 
 %设置源码计数器
 \newcommand\filesourcenumbernameone{源码}
 \newcounter{filesourcenumber}[section]
-\renewcommand\thefilesourcenumber{
-    \thesection.\arabic{filesourcenumber}
-}
+\renewcommand\thefilesourcenumber{\thesection.\arabic{filesourcenumber}}
 
 %设置图片计数器
 \counterwithin{figure}{section}
-\renewcommand\thefigure{
-    \thesection.\arabic{figure}
-}
+\renewcommand\thefigure{\thesection.\arabic{figure}}
 
 %设置表计数器
 \counterwithin{table}{section}
-\renewcommand\thetable{
-    \thesection.\arabic{table}
-}
+\renewcommand\thetable{\thesection.\arabic{table}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %解决目录字体重叠BUG
@@ -257,6 +247,12 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \newcommand{\refTheBookChapter}[1]{\uwave{第\ref{#1}章}}
 \newcommand{\refTheBookSection}[1]{\uwave{第\ref{#1}节}}
 
+\usepackage{tcolorbox}
+%设置公式计数器
+\newcommand\fileequalnumbernameone{公式}
+\newcounter{fileequalnumber}[section]
+\renewcommand\thefileequalnumber{\thesection.\arabic{fileequalnumber}}
+
 \begin{document}
 
 %设置标点挤压模式
@@ -302,6 +298,8 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \setcounter{secnumdepth}{-2}                  %暂停编号，但加入目录
 \chapter{附录}
 \begin{multicols}{3}
+\section{公式索引}
+\input{EQIndex.tex}                           %公式索引目录
 \section{图片索引}
 \input{figureIndex.tex}                       %图片索引目录
 \section{表格索引}
@@ -340,6 +338,7 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 % the_book_chapter the_book_subsection the_book_subsubsection
 % the_book_section the_book_image the_book_table
 % the_book_file the_book_tree_file the_book_command_file
+% the_book_eq
 % littlelongworld tabbing ref
 % figurename tablename filesourcenumbernameone
 % treeindexnumbernameone commandnumbernameone footnote
@@ -348,5 +347,6 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 % refTheBookTreeIndex refTheBookCommand refTheBookChapter refTheBookSection
 % \hspace*{\parindent}
 % FloatBarrier
+% :tex_raw:[=[%the_book_insert{}]=]
 ]]
 

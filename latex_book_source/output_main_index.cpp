@@ -81,13 +81,16 @@ namespace {
         mutable std::optional<OutPutFileStream> dirTreeSourceIndex;
         mutable std::optional<OutPutFileStream> commandSourceIndex;
         mutable std::optional<OutPutFileStream> tableIndex;
+        mutable std::optional<OutPutFileStream> EQIndex;
         QFile fileFigureIndex;
         QFile fileSourceIndex;
         QFile fileDirTreeSourceIndex;
         QFile fileCommandSourceIndex;
         QFile fileTableIndex;
+        QFile fileEQIndex;
     public:
         ThisGlobalTexBuilder() {
+            fileEQIndex.setFileName(getOutPutFileFullPath(qsl("EQIndex.tex")));
             fileFigureIndex.setFileName(getOutPutFileFullPath(qsl("figureIndex.tex")));
             fileSourceIndex.setFileName(getOutPutFileFullPath(qsl("sourceIndex.tex")));
             fileDirTreeSourceIndex.setFileName(getOutPutFileFullPath(qsl("dirTreeSourceIndex.tex")));
@@ -98,11 +101,13 @@ namespace {
             fileCommandSourceIndex.open(QIODevice::WriteOnly);
             fileDirTreeSourceIndex.open(QIODevice::WriteOnly);
             fileTableIndex.open(QIODevice::WriteOnly);
+            fileEQIndex.open(QIODevice::WriteOnly);
             figureIndex.emplace(&fileFigureIndex);
             sourceIndex.emplace(&fileSourceIndex);
             dirTreeSourceIndex.emplace(&fileDirTreeSourceIndex);
             commandSourceIndex.emplace(&fileCommandSourceIndex);
             tableIndex.emplace(&fileTableIndex);
+            EQIndex.emplace(&fileEQIndex);
         }
         QTextStream & getFigureIndex() const override {
             return *figureIndex;
@@ -119,12 +124,16 @@ namespace {
         QTextStream & getTableIndex() const override {
             return *tableIndex;
         }
+        QTextStream & getEQIndex() const override {
+            return *EQIndex;
+        }
         ~ThisGlobalTexBuilder() {
             commandSourceIndex.reset();
             dirTreeSourceIndex.reset();
             sourceIndex.reset();
             figureIndex.reset();
             tableIndex.reset();
+            EQIndex.reset();
         }
     };
 }
