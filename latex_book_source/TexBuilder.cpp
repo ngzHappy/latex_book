@@ -141,6 +141,11 @@ static inline const QString & theBookTable() {
     return varAns;
 }
 
+static inline const QString & theBookEqual() {
+    const static auto varAns = qsl(":the_book_eq:");
+    return varAns;
+}
+
 /*将替换latex特殊字符*/
 inline static std::string _replace_all(const std::string_view arg) {
 
@@ -1601,6 +1606,7 @@ title=\commandnumbernameone \thecommandnumber
         varAns->emplace(theBookReadTreeFileSouce(), 1);
         varAns->emplace(theBookReadCommandFileSouce(), 1);
         varAns->emplace(theBookTable(), 1);
+        varAns->emplace(theBookEqual(), 1);
         return std::move(varAns);
     }
 
@@ -1997,6 +2003,12 @@ title=\commandnumbernameone \thecommandnumber
         } else if (theBookReadTreeFileSouce() == varKey.name) {
             auto varValue =
                 std::make_shared< KeyTreeFileSouceString >(varDeepth,
+                    varAns,
+                    currentParseState);
+            *varAns = varValue;
+        } else if (theBookEqual() == varKey.name) {
+            auto varValue =
+                std::make_shared< KeyEqualsString >(varDeepth,
                     varAns,
                     currentParseState);
             *varAns = varValue;
