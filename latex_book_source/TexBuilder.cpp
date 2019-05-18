@@ -2613,6 +2613,11 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
         if (varLineTrimed.isEmpty()) {
             continue;
         }
+
+        if (varLineTrimed.startsWith(qsl("?????"))) {
+            break;
+        }
+
         int varN = 0;
         for (const auto & varI : varLine) {
             if (varI.isSpace()) {
@@ -2621,6 +2626,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
             }
             break;
         }
+
         if (varFirstLine.isEmpty() &&(!varLineTrimed.startsWith(qsl("template")))) {
             varFirstLine = varLineTrimed;
         }
