@@ -251,6 +251,14 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \newcounter{fileequalnumber}[section]
 \renewcommand\thefileequalnumber{\thesection.\arabic{fileequalnumber}}
 
+%table cell
+\usepackage{makecell}
+%设置函数计数器
+\newcommand\functionindexnameone{函数}
+\newcounter{functionindex}
+\renewcommand\thefunctionindex{\arabic{functionindex}}
+\newcommand{\addfunctionindex}[1]{\refstepcounter{functionindex}\label{#1}\thefunctionindex\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\functionindexnameone\,}\footnotesize{\thefunctionindex}}}}
+
 \begin{document}
 
 %设置标点挤压模式
