@@ -21,6 +21,8 @@ _keys_set()
 _insertKey()
 *****/
 
+inline static bool buildFunctionString(QFile * argFile, const QString & argPath);
+
 /*find max * between ( @ or @ )*/
 static inline int getMaxStartCount(const QString & arg, const QString & argTheFileName) {
 
@@ -151,8 +153,7 @@ static inline const QString & theBookEqual() {
     return varAns;
 }
 
-/*将替换latex特殊字符*/
-inline static std::string _replace_all(const std::string_view arg) {
+namespace _the_private {
 
     class ReplaceItem {
     public:
@@ -165,123 +166,132 @@ inline static std::string _replace_all(const std::string_view arg) {
         }
     };
 
-    /* regex : ^ $ \ . * + ? ( ) [ ] { } | */
-    const static std::vector< ReplaceItem > varReplaceDutys = []() {
-        constexpr const auto varRegexOption =
-            std::regex_constants::ECMAScript |
-            std::regex_constants::optimize;
-        std::vector< ReplaceItem > ans;
-        ans.emplace_back(std::regex(u8R"(\+)", varRegexOption), std::string(u8R"({\sourcefonttwo{}+})"sv));
-        ans.emplace_back(std::regex(u8R"(\*)", varRegexOption), std::string(u8R"(\raisebox{-0.35ex}{\sourcefonttwo{}*})"sv));
-        ans.emplace_back(std::regex(u8R"(-)", varRegexOption), std::string(u8R"(\hspace{0.05em}\rule[0.7ex]{0.4em}{0.65pt}\hspace{0.05em})"sv));
-        ans.emplace_back(std::regex(u8R"(=)", varRegexOption), std::string(u8R"({\sourcefonttwo{}=})"sv));
-        //ans.emplace_back(std::regex(u8R"(/)", varRegexOption), std::string(u8R"({\sourcefonttwo{}/})"sv));
-        ans.emplace_back(std::regex(u8R"(~)", varRegexOption), std::string(u8R"(\raisebox{0.16ex}{\sourcefonttwo\~{}})"sv));
-        ans.emplace_back(std::regex(u8R"(#)", varRegexOption), std::string(u8R"({\sourcefonttwo\#})"sv));
-        ans.emplace_back(std::regex(u8R"(\$)", varRegexOption), std::string(u8R"({\sourcefonttwo\$})"sv));
-        ans.emplace_back(std::regex(u8R"(%)", varRegexOption), std::string(u8R"({\sourcefonttwo\%})"sv));
-        ans.emplace_back(std::regex(u8R"(\^)", varRegexOption), std::string(u8R"({\sourcefonttwo\^{}})"sv));
-        ans.emplace_back(std::regex(u8R"(&)", varRegexOption), std::string(u8R"({\sourcefonttwo\&})"sv));
-        ans.emplace_back(std::regex(u8R"(\{)", varRegexOption), std::string(u8R"({\sourcefonttwo\{})"sv));
-        ans.emplace_back(std::regex(u8R"(\})", varRegexOption), std::string(u8R"({\sourcefonttwo\}})"sv));
-        ans.emplace_back(std::regex(u8R"(_)", varRegexOption), std::string(u8R"(\underline{\hspace{0.5em}})"sv));
-        ans.emplace_back(std::regex(u8R"(\\)", varRegexOption), std::string(u8R"(\textbackslash{})"sv));
-        ans.emplace_back(std::regex(u8R"(°)", varRegexOption), std::string(u8R"(\textdegree{})"sv));
-        ans.emplace_back(std::regex(u8R"(×)", varRegexOption), std::string(u8R"(\texttimes{})"sv));
-        ans.emplace_back(std::regex(u8R"(♀)", varRegexOption), std::string(u8R"(\male{})"sv));
-        ans.emplace_back(std::regex(u8R"(♂)", varRegexOption), std::string(u8R"(\female{})"sv));
-        ans.emplace_back(std::regex(u8R"(★)", varRegexOption), std::string(u8R"(\ding{72})"sv));
-        ans.emplace_back(std::regex(u8R"(☆)", varRegexOption), std::string(u8R"(\ding{73})"sv));
-        return std::move(ans);
-    }();
+    inline const std::vector< ReplaceItem > & getDefaultReplace() {
+        /* regex : ^ $ \ . * + ? ( ) [ ] { } | */
+        const static std::vector< ReplaceItem > varReplaceDutys = []() {
+            constexpr const auto varRegexOption =
+                std::regex_constants::ECMAScript |
+                std::regex_constants::optimize;
+            std::vector< ReplaceItem > ans;
+            ans.emplace_back(std::regex(u8R"(\+)", varRegexOption), std::string(u8R"({\sourcefonttwo{}+})"sv));
+            ans.emplace_back(std::regex(u8R"(\*)", varRegexOption), std::string(u8R"(\raisebox{-0.35ex}{\sourcefonttwo{}*})"sv));
+            ans.emplace_back(std::regex(u8R"(-)", varRegexOption), std::string(u8R"(\hspace{0.05em}\rule[0.7ex]{0.4em}{0.65pt}\hspace{0.05em})"sv));
+            ans.emplace_back(std::regex(u8R"(=)", varRegexOption), std::string(u8R"({\sourcefonttwo{}=})"sv));
+            //ans.emplace_back(std::regex(u8R"(/)", varRegexOption), std::string(u8R"({\sourcefonttwo{}/})"sv));
+            ans.emplace_back(std::regex(u8R"(~)", varRegexOption), std::string(u8R"(\raisebox{0.16ex}{\sourcefonttwo\~{}})"sv));
+            ans.emplace_back(std::regex(u8R"(#)", varRegexOption), std::string(u8R"({\sourcefonttwo\#})"sv));
+            ans.emplace_back(std::regex(u8R"(\$)", varRegexOption), std::string(u8R"({\sourcefonttwo\$})"sv));
+            ans.emplace_back(std::regex(u8R"(%)", varRegexOption), std::string(u8R"({\sourcefonttwo\%})"sv));
+            ans.emplace_back(std::regex(u8R"(\^)", varRegexOption), std::string(u8R"({\sourcefonttwo\^{}})"sv));
+            ans.emplace_back(std::regex(u8R"(&)", varRegexOption), std::string(u8R"({\sourcefonttwo\&})"sv));
+            ans.emplace_back(std::regex(u8R"(\{)", varRegexOption), std::string(u8R"({\sourcefonttwo\{})"sv));
+            ans.emplace_back(std::regex(u8R"(\})", varRegexOption), std::string(u8R"({\sourcefonttwo\}})"sv));
+            ans.emplace_back(std::regex(u8R"(_)", varRegexOption), std::string(u8R"(\underline{\hspace{0.5em}})"sv));
+            ans.emplace_back(std::regex(u8R"(\\)", varRegexOption), std::string(u8R"(\textbackslash{})"sv));
+            ans.emplace_back(std::regex(u8R"(°)", varRegexOption), std::string(u8R"(\textdegree{})"sv));
+            ans.emplace_back(std::regex(u8R"(×)", varRegexOption), std::string(u8R"(\texttimes{})"sv));
+            ans.emplace_back(std::regex(u8R"(♀)", varRegexOption), std::string(u8R"(\male{})"sv));
+            ans.emplace_back(std::regex(u8R"(♂)", varRegexOption), std::string(u8R"(\female{})"sv));
+            ans.emplace_back(std::regex(u8R"(★)", varRegexOption), std::string(u8R"(\ding{72})"sv));
+            ans.emplace_back(std::regex(u8R"(☆)", varRegexOption), std::string(u8R"(\ding{73})"sv));
+            return std::move(ans);
+        }();
 
-    std::string ans;
+        return varReplaceDutys;
+    }
 
-    class Replace {
-    public:
-        std::string_view data;
-        bool is_replace = false;
-        inline Replace(std::string_view a, bool b) :
-            data(a),
-            is_replace(b) {
+    /*将替换latex特殊字符*/
+    inline static std::string _replace_all(const std::string_view arg, const std::vector< ReplaceItem > & varReplaceDutys) {
+
+        std::string ans;
+
+        class Replace {
+        public:
+            std::string_view data;
+            bool is_replace = false;
+            inline Replace(std::string_view a, bool b) :
+                data(a),
+                is_replace(b) {
+            }
+            inline Replace() = default;
+        };
+        std::vector<Replace> tmpReplacesInput;
+        std::vector<Replace> tmpReplaces;
+
+        tmpReplaces.emplace_back(arg, false);
+
+        for (const auto & R : varReplaceDutys) {/*对于每一个正则表达式*/
+
+            /*如果输入里面没有匹配此正则表达式则跳过*/
+            if (false == std::regex_search(arg.data(), arg.data() + arg.size(), R.regex)) {
+                continue;
+            }
+
+            tmpReplacesInput = std::move(tmpReplaces);
+
+            for (const auto & varD : tmpReplacesInput) {
+
+                if (varD.is_replace) { /*copy the replaced data to ans*/
+                    tmpReplaces.push_back(varD);
+                    continue;
+                }
+
+                if (varD.data.empty()) { /*skip the empty data  */
+                    //tmpReplaces.push_back(varD);
+                    continue;
+                }
+
+                std::regex_iterator varIt{
+                    varD.data.data(),
+                    varD.data.data() + varD.data.size(),
+                    R.regex };
+                decltype(varIt) varE;
+
+                if (varIt == varE) { /*if data do not match regex , copy it to ans*/
+                    tmpReplaces.push_back(varD);
+                    continue;
+                }
+
+                /*add a do not used data,it will be poped*/
+                tmpReplaces.emplace_back(std::string_view{}, false);
+                for (; varIt != varE; ++varIt) { /*replace the data*/
+                    tmpReplaces.pop_back();
+                    const auto varPreFix = varIt->prefix();
+                    const std::string_view varBeforeP(varPreFix.first, varPreFix.length());
+                    const auto varSubFix = varIt->suffix();
+                    const std::string_view varAfterP(varSubFix.first, varSubFix.length());
+                    tmpReplaces.emplace_back(varBeforeP, false);
+                    tmpReplaces.emplace_back(R.data, true);
+                    tmpReplaces.emplace_back(varAfterP, false);
+                }
+
+            }/*replace*/
+        }/*regex*/
+
+        {
+            /*先计算返回元素大小...*/
+            std::size_t varFinalSize = 4;
+            for (const auto & varI : tmpReplaces) {
+                varFinalSize += varI.data.size();
+            }
+            ans.reserve(varFinalSize);
         }
-        inline Replace() = default;
-    };
-    std::vector<Replace> tmpReplacesInput;
-    std::vector<Replace> tmpReplaces;
 
-    tmpReplaces.emplace_back(arg, false);
-
-    for (const auto & R : varReplaceDutys) {/*对于每一个正则表达式*/
-
-        /*如果输入里面没有匹配此正则表达式则跳过*/
-        if (false == std::regex_search(arg.data(), arg.data() + arg.size(), R.regex)) {
-            continue;
-        }
-
-        tmpReplacesInput = std::move(tmpReplaces);
-
-        for (const auto & varD : tmpReplacesInput) {
-
-            if (varD.is_replace) { /*copy the replaced data to ans*/
-                tmpReplaces.push_back(varD);
-                continue;
-            }
-
-            if (varD.data.empty()) { /*skip the empty data  */
-                //tmpReplaces.push_back(varD);
-                continue;
-            }
-
-            std::regex_iterator varIt{
-                varD.data.data(),
-                varD.data.data() + varD.data.size(),
-                R.regex };
-            decltype(varIt) varE;
-
-            if (varIt == varE) { /*if data do not match regex , copy it to ans*/
-                tmpReplaces.push_back(varD);
-                continue;
-            }
-
-            /*add a do not used data,it will be poped*/
-            tmpReplaces.emplace_back(std::string_view{}, false);
-            for (; varIt != varE; ++varIt) { /*replace the data*/
-                tmpReplaces.pop_back();
-                const auto varPreFix = varIt->prefix();
-                const std::string_view varBeforeP(varPreFix.first, varPreFix.length());
-                const auto varSubFix = varIt->suffix();
-                const std::string_view varAfterP(varSubFix.first, varSubFix.length());
-                tmpReplaces.emplace_back(varBeforeP, false);
-                tmpReplaces.emplace_back(R.data, true);
-                tmpReplaces.emplace_back(varAfterP, false);
-            }
-
-        }/*replace*/
-    }/*regex*/
-
-    {
-        /*先计算返回元素大小...*/
-        std::size_t varFinalSize = 4;
         for (const auto & varI : tmpReplaces) {
-            varFinalSize += varI.data.size();
+            if (varI.data.empty()) {
+                continue;
+            }
+            ans.append(varI.data);
         }
-        ans.reserve(varFinalSize);
+
+        return std::move(ans);
     }
 
-    for (const auto & varI : tmpReplaces) {
-        if (varI.data.empty()) {
-            continue;
-        }
-        ans.append(varI.data);
-    }
-
-    return std::move(ans);
-}
-
+}/*namespace _the_private*/
 
 /*将文本转换为符合tex语法的文本*/
-static inline QString plainStringToTexString(const QString & arg) {
+static inline QString plainStringToTexString(const QString & arg,
+    const std::vector< _the_private::ReplaceItem > & varReplaceDutys = _the_private::getDefaultReplace()) {
     if (arg.isEmpty()) {
         return{};
     }
@@ -289,8 +299,8 @@ static inline QString plainStringToTexString(const QString & arg) {
     {   /*转换为UTF8编码*/
         const auto argInput = arg.toUtf8();
         /*替换特殊字符*/
-        varString = _replace_all({ argInput.constData(),
-            static_cast<std::size_t>(argInput.size()) });
+        varString = _the_private::_replace_all({ argInput.constData(),
+            static_cast<std::size_t>(argInput.size()) }, varReplaceDutys);
     }
     /*转换成QString*/
     return QString::fromUtf8(varString.c_str(),
@@ -1382,9 +1392,18 @@ title=\commandnumbernameone \thecommandnumber
                     return false;
                 }
 
-                if (varKeyLabel != varString) {
-                    return false;
+                /*****************************************************/
+                {
+                    const auto varOutFileName = getOutPutFileFullPath(varArgs2[0]);
+                    QFile varRead{ varOutFileName };
+                    if (!varRead.open(QIODevice::ReadOnly)) {
+                        return false;
+                    }
+                    if (!buildFunctionString(&varRead, varOutFileName + qsl(".tex"))) {
+                        return false;
+                    }
                 }
+                /*****************************************************/
 
                 {
                     auto & varIndexStream = state->texBuilderPrivate->globalSuper ? state
@@ -2542,3 +2561,28 @@ bool TexBuilder::convert() {
 extern QString theBookPlainTextToTexText(const QString & arg) {
     return plainStringToTexString(arg);
 }
+
+inline static bool buildFunctionString(QFile * argFile, const QString & argPath) {
+    QFile varOutFile{ argPath };
+    if (!varOutFile.open(QIODevice::WriteOnly)) {
+        return false;
+    }
+    OutPutFileStream varOut{ &varOutFile };
+    InputStream varInput{ argFile };
+
+    std::vector<QString> varLines;
+    while (!varInput.atEnd()) {
+        auto varLine = varInput.readLine().trimmed();
+        if (varLine.isEmpty()) {
+            continue;
+        }
+        varLines.push_back(plainStringToTexString(std::move(varLine)));
+    }
+
+    for (const auto & varLine : varLines) {
+
+    }
+
+    return true;
+}
+
