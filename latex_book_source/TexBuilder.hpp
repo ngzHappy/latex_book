@@ -31,7 +31,7 @@ public:
     virtual QTextStream & getCommandSourceIndex() const = 0;
     virtual QTextStream & getTableIndex() const = 0;
     virtual QTextStream & getEQIndex() const = 0;
-    virtual QTextStream & getFunctionIndex() = 0;
+    virtual QTextStream & getFunctionIndex() const = 0;
 };
 
 class TexBuilder :

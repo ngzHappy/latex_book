@@ -301,6 +301,8 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \begin{multicols}{3}
 \section{公式索引}
 \input{EQIndex.tex}                           %公式索引目录
+\section{函数索引}
+\input{functionIndex.tex}                     %函数索引目录
 \section{图片索引}
 \input{figureIndex.tex}                       %图片索引目录
 \section{表格索引}
