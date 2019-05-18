@@ -39,7 +39,9 @@ class TexBuilder :
     TexBuilderPrivate * const thisp;
 public:
 
-    TexBuilder(GlobalTexBuilder * g = nullptr);
+    TexBuilder(GlobalTexBuilder * g);
+    TexBuilder(TexBuilder * p);
+    TexBuilder();
     ~TexBuilder();
 
     /*设置输入文件名称*/

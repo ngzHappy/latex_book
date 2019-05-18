@@ -301,6 +301,7 @@ class TexBuilderPrivate {
 public:
     TexBuilder * const super;
     GlobalTexBuilder * const globalSuper;
+    GlobalTexBuilder * parentGlobalSuper{ nullptr };
     QString inputFileName;
     QString outputFileName;
 
@@ -545,7 +546,7 @@ public:
 
                 QString varTableString;
                 {
-                    ReadTable varReader;
+                    ReadTable varReader{ state->texBuilderPrivate->super };
                     varReader.setTableDirName(varDirPath);
                     if (!varReader.open()) {
                         return false;
@@ -1146,7 +1147,7 @@ title=\commandnumbernameone \thecommandnumber
                 varString += QChar('\n');
                 {/*append margin ... */
                     varString +=
-                    qsl(R"(\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\parbox{1em}{\setlength{\baselineskip}{2pt}\fileequalnumbernameone}}\footnotesize{\thefileequalnumber}}})");
+                        qsl(R"(\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\parbox{1em}{\setlength{\baselineskip}{2pt}\fileequalnumbernameone}}\footnotesize{\thefileequalnumber}}})");
                 }
                 varString += varFileSourceDataEnd;
                 varString += qsl(R"(\end{tcolorbox})");
@@ -1381,14 +1382,17 @@ title=\commandnumbernameone \thecommandnumber
                     return false;
                 }
 
-                if (varKeyLabel!=varString) {
+                if (varKeyLabel != varString) {
                     return false;
                 }
-              
+
                 {
-                    auto & varIndexStream = state
+                    auto & varIndexStream = state->texBuilderPrivate->globalSuper ? state
                         ->texBuilderPrivate
                         ->globalSuper
+                        ->getFunctionIndex() : state
+                        ->texBuilderPrivate
+                        ->parentGlobalSuper
                         ->getFunctionIndex();
                     varIndexStream << qsl(R"++++(\noindent\functionindexnameone\ \ref{)++++");
                     varIndexStream << varKeyLabel;
@@ -1716,7 +1720,7 @@ title=\commandnumbernameone \thecommandnumber
         varAns->emplace(theBookReadCommandFileSouce(), 1);
         varAns->emplace(theBookTable(), 1);
         varAns->emplace(theBookEqual(), 1);
-        varAns->emplace(theBookFunctionIndex(),1);
+        varAns->emplace(theBookFunctionIndex(), 1);
         return std::move(varAns);
     }
 
@@ -2464,6 +2468,10 @@ public:
 TexBuilder::TexBuilder(GlobalTexBuilder * arg) :
     thisp(new TexBuilderPrivate(this, arg)) {
 
+}
+
+TexBuilder::TexBuilder(TexBuilder * p) : TexBuilder(static_cast<GlobalTexBuilder *>(nullptr)) {
+    thisp->parentGlobalSuper = p->thisp->globalSuper;
 }
 
 TexBuilder::~TexBuilder() {

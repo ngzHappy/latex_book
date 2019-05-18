@@ -29,7 +29,8 @@ public:
     Reader headReader;
     Reader bodyReader;
     Reader headControlReader;
-    inline ReadTablePrivate() {
+    TexBuilder * const parentBuilder;
+    inline ReadTablePrivate(TexBuilder * arg) :parentBuilder{arg} {
     }
 
     inline ~ReadTablePrivate() {
@@ -46,7 +47,7 @@ public:
 
         const QDir varDir(tableDirName);
         for (const auto & varI : varNames) {
-            TexBuilder varBuilder;
+            TexBuilder varBuilder{ parentBuilder };
             varBuilder.setInputFileName(
                 varDir.absoluteFilePath(varI.first));
             varBuilder.setOutputFileName(
@@ -61,8 +62,8 @@ public:
     }
 };
 
-ReadTable::ReadTable() :
-    thisp(new ReadTablePrivate) {
+ReadTable::ReadTable(TexBuilder * arg) :
+    thisp(new ReadTablePrivate{arg}) {
 }
 
 ReadTable::~ReadTable() {
