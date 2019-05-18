@@ -168,7 +168,7 @@ namespace _the_private {
 
     inline const std::vector< ReplaceItem > & getDefaultReplace() {
         /* regex : ^ $ \ . * + ? ( ) [ ] { } | */
-        const static std::vector< ReplaceItem > varReplaceDutys = []() {
+        const static std::vector< ReplaceItem > varReplaceDutys = []() ->auto {
             constexpr const auto varRegexOption =
                 std::regex_constants::ECMAScript |
                 std::regex_constants::optimize;
@@ -2563,6 +2563,29 @@ extern QString theBookPlainTextToTexText(const QString & arg) {
 }
 
 inline static bool buildFunctionString(QFile * argFile, const QString & argPath) {
+
+    /* https://github.com/nanguazhude/MyLearnLatex/blob/master/GuZhenRen1/cplusplus/main.cpp */
+    const static std::vector< _the_private::ReplaceItem > varReplaceDutys = []()->auto {
+        std::vector< _the_private::ReplaceItem > ans;
+        ans.emplace_back(std::regex(u8R"(~)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\~{})"sv));
+        ans.emplace_back(std::regex(u8R"(#)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\#)"sv));
+        ans.emplace_back(std::regex(u8R"(\$)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\$)"sv));
+        ans.emplace_back(std::regex(u8R"(%)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\%)"sv));
+        ans.emplace_back(std::regex(u8R"(\^)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\^{})"sv));
+        ans.emplace_back(std::regex(u8R"(&)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\&)"sv));
+        ans.emplace_back(std::regex(u8R"(\{)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\{)"sv));
+        ans.emplace_back(std::regex(u8R"(\})", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\})"sv));
+        ans.emplace_back(std::regex(u8R"(_)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\_)"sv));
+        ans.emplace_back(std::regex(u8R"(\\)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\textbackslash{})"sv));
+        ans.emplace_back(std::regex(u8R"(°)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\textdegree{})"sv));
+        ans.emplace_back(std::regex(u8R"(×)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\texttimes{})"sv));
+        ans.emplace_back(std::regex(u8R"(♀)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\male{})"sv));
+        ans.emplace_back(std::regex(u8R"(♂)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\female{})"sv));
+        ans.emplace_back(std::regex(u8R"(★)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\ding{72})"sv));
+        ans.emplace_back(std::regex(u8R"(☆)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"(\ding{73})"sv));
+        return std::move(ans);
+    }();
+
     QFile varOutFile{ argPath };
     if (!varOutFile.open(QIODevice::WriteOnly)) {
         return false;
@@ -2570,18 +2593,78 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
     OutPutFileStream varOut{ &varOutFile };
     InputStream varInput{ argFile };
 
-    std::vector<QString> varLines;
+    class LineDetailString : public QString {
+    public:
+        inline LineDetailString(const QString & arg, int n) : QString(arg),
+            leftSpace(n) {
+        }
+        inline LineDetailString(QString && arg, int n) : QString(std::move(arg)),
+            leftSpace(n) {
+        }
+        int leftSpace;
+    };
+
+    std::vector<LineDetailString> varLines;
     while (!varInput.atEnd()) {
-        auto varLine = varInput.readLine().trimmed();
-        if (varLine.isEmpty()) {
+        auto varLine = varInput.readLine();
+        auto varLineTrimed = varLine.trimmed();
+        if (varLineTrimed.isEmpty()) {
             continue;
         }
-        varLines.push_back(plainStringToTexString(std::move(varLine)));
+        int varN = 0;
+        for (const auto & varI : varLine) {
+            if (varI.isSpace()) {
+                ++varN;
+                continue;
+            }
+            break;
+        }
+        varLines.push_back({ plainStringToTexString(std::move(varLineTrimed), varReplaceDutys) ,varN });
     }
 
+    if (varLines.empty()) {
+        return true;
+    }
+
+    bool isFirstLine = true;
+    bool justAfterTemplate = false;
     for (const auto & varLine : varLines) {
-
+        bool isTemplateLine = false;
+        if (isFirstLine) {
+            isTemplateLine = varLine.startsWith(qsl("template"));
+            justAfterTemplate = true;
+        }
+        if (isTemplateLine) {
+            isFirstLine = false;
+            varOut << qsl(R"(\makecell[l]{)");
+            varOut << qsl(R"(\scriptsize\itshape\sourcefontone{)");
+            varOut << varLine;
+            varOut << qsl(R"(})");
+        } else if (isFirstLine) {
+            isFirstLine = false;
+            varOut << qsl(R"(\makecell[l]{)");
+            varOut << qsl(R"(\small\itshape\sourcefontone{)");
+            varOut << varLine;
+            varOut << qsl(R"(})");
+        } else {
+            if (justAfterTemplate) {
+                varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{)");
+                justAfterTemplate = false;
+            } else {
+                if (varLine.leftSpace == 0) {
+                    varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{)");
+                }
+                else {
+                    varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{\hspace{%1em})").arg(varLine.leftSpace);
+                }
+            }
+            varOut << varLine;
+            varOut << qsl(R"(})");
+        }
     }
+
+    varOut << qsl(R"(})");
+    varOut << qsl("\n");
 
     return true;
 }
