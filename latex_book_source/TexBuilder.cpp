@@ -86,6 +86,11 @@ static inline const QString & texRaw() {
     return varAns;
 }
 
+static inline const QString & theBookFunctionIndex() {
+    const static auto varAns = qsl(":the_book_function_index:");
+    return varAns;
+}
+
 static inline const QString & theBookChapter() {
     const static auto varAns = qsl(":the_book_chapter:");
     return varAns;
@@ -1711,6 +1716,7 @@ title=\commandnumbernameone \thecommandnumber
         varAns->emplace(theBookReadCommandFileSouce(), 1);
         varAns->emplace(theBookTable(), 1);
         varAns->emplace(theBookEqual(), 1);
+        varAns->emplace(theBookFunctionIndex(),1);
         return std::move(varAns);
     }
 
@@ -2059,6 +2065,12 @@ title=\commandnumbernameone \thecommandnumber
         } else if (varKey.name == theBookChapter()) {
             auto varValue =
                 std::make_shared< KeyChapterString >(varDeepth,
+                    varAns,
+                    currentParseState);
+            *varAns = varValue;
+        } else if (varKey.name == theBookFunctionIndex()) {
+            auto varValue =
+                std::make_shared< KeyFunctionLabelString >(varDeepth,
                     varAns,
                     currentParseState);
             *varAns = varValue;
