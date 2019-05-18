@@ -2654,7 +2654,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
                 if (varLine.leftSpace == 0) {
                     varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{)");
                 } else {
-                    varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{\hspace{%1em})").arg(1 + varLine.leftSpace);
+                    varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{\hspace{%1em})").arg(varLine.leftSpace);
                 }
             }
             varOut << varLine;
