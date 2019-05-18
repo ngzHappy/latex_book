@@ -258,6 +258,7 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \newcounter{functionindex}
 \renewcommand\thefunctionindex{\arabic{functionindex}}
 \newcommand{\addfunctionindex}[1]{\refstepcounter{functionindex}\label{#1}\thefunctionindex\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\functionindexnameone\,}\footnotesize{\thefunctionindex}}}}
+\newcommand{\refTheBookFunction}[1]{\theBookLeftRightRefWrap{\functionindexnameone\theBookRawRef{#1}}}
 
 \begin{document}
 
@@ -346,6 +347,8 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 % treeindexnumbernameone commandnumbernameone footnote
 % item itemize comment textbullet
 % \hspace*{\parindent}
+% refTheBookFunction refTheBookFigure refTheBookTable refTheBookFileSource
+% refTheBookTreeIndex refTheBookCommand refTheBookChapter refTheBookSection
 % FloatBarrier
 ]]
 
