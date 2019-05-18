@@ -357,6 +357,7 @@ public:
             TypeTable,
             TypeImageString,
             TypeEqualString,
+            TypeFunctionLabelString,
         };
 
         using item_list = std::list< std::shared_ptr<Item> >;
@@ -1323,6 +1324,78 @@ title=\commandnumbernameone \thecommandnumber
 }\label{)") + varKeyLabel
 + qsl(R"(}
 )");
+                *v = std::make_shared<RawString>(varString, v, state);
+            }
+            /*删除整个函数*/
+            state->data.erase(this->pos, ++varArgs1[0].second);
+            /*更新表数据*/
+            *arg = v;
+            return true;
+        }
+
+        bool isKeyFunction() const override {
+            return true;
+        }
+
+    };
+
+    class KeyFunctionLabelString :
+        public FunctionOp {
+    public:
+        inline KeyFunctionLabelString(
+            int deepthx,
+            item_list_pos p,
+            std::shared_ptr<ParseState> s)
+            :FunctionOp(deepthx, p, std::move(s)) {
+        }
+
+        virtual Type getType() const override {
+            return Type::TypeFunctionLabelString;
+        }
+
+        bool toRawString(item_list_pos * arg) override {
+            /*将ans插入表*/
+            auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
+            bool isOk = false;
+            /*获得args*/
+            auto varArgs1 = getCallArgs(this->pos, 1, &isOk, this->state);
+            if (isOk == false) {
+                return false;
+            }
+            auto varArgs = argc_to_string(varArgs1);
+            /*将args转换为string*/
+            {
+                const GetTheBookConstexpr varConstexpr;
+                auto varString = varArgs[0];
+                const auto varKeyLabel = varString.trimmed();
+
+                auto varArgs2 = varConstexpr.getValues(varKeyLabel);
+                if (varArgs2.size() != 1) {
+                    return false;
+                }
+
+                if (varKeyLabel!=varString) {
+                    return false;
+                }
+              
+                {
+                    auto & varIndexStream = state
+                        ->texBuilderPrivate
+                        ->globalSuper
+                        ->getFunctionIndex();
+                    varIndexStream << qsl(R"++++(\noindent\functionindexnameone\ \ref{)++++");
+                    varIndexStream << varKeyLabel;
+                    varIndexStream << qsl(R"++++(}\dotfill\pageref{)++++");
+                    varIndexStream << varKeyLabel;
+                    varIndexStream << qsl(R"++++(}%)++++");
+                    varIndexStream << varKeyLabel;
+                    varIndexStream << endl << endl;
+                }
+
+                varString = qsl(R"(\addfunctionindex{%1})").arg(varKeyLabel);
+
                 *v = std::make_shared<RawString>(varString, v, state);
             }
             /*删除整个函数*/
