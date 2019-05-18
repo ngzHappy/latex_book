@@ -2605,6 +2605,8 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
     };
 
     std::vector<LineDetailString> varLines;
+    QString varFirstLine;
+
     while (!varInput.atEnd()) {
         auto varLine = varInput.readLine();
         auto varLineTrimed = varLine.trimmed();
@@ -2619,6 +2621,9 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
             }
             break;
         }
+        if (varLines.empty()) {
+            varFirstLine = varLineTrimed;
+        }
         varLines.push_back({ plainStringToTexString(std::move(varLineTrimed), varReplaceDutys) ,varN });
     }
 
@@ -2628,7 +2633,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
 
     bool isFirstLine = true;
     bool justAfterTemplate = false;
-    const QString varFirstLine = varLines[0];
+    
     for (const auto & varLine : varLines) {
         bool isTemplateLine = false;
         if (isFirstLine) {
@@ -2656,7 +2661,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
                     varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{)");
                 } else {
                     varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{\phantom{%1})")
-                        .arg(varFirstLine.left(varLine.leftSpace));
+                        .arg(plainStringToTexString( varFirstLine.left(varLine.leftSpace) ,varReplaceDutys ) );
                 }
             }
             varOut << varLine;
