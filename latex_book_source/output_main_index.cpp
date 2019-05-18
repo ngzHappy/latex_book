@@ -112,7 +112,7 @@ namespace {
             commandSourceIndex.emplace(&fileCommandSourceIndex);
             tableIndex.emplace(&fileTableIndex);
             EQIndex.emplace(&fileEQIndex);
-            functionIndex.emplace(&fileFigureIndex);
+            functionIndex.emplace(&fileFunctionIndex);
         }
         QTextStream & getFigureIndex() const override {
             return *figureIndex;
