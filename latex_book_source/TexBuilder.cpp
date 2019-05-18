@@ -2621,7 +2621,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
             }
             break;
         }
-        if (varLines.empty()) {
+        if (varFirstLine.isEmpty() &&(!varLineTrimed.startsWith(qsl("template")))) {
             varFirstLine = varLineTrimed;
         }
         varLines.push_back({ plainStringToTexString(std::move(varLineTrimed), varReplaceDutys) ,varN });
