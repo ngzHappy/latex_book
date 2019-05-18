@@ -82,12 +82,14 @@ namespace {
         mutable std::optional<OutPutFileStream> commandSourceIndex;
         mutable std::optional<OutPutFileStream> tableIndex;
         mutable std::optional<OutPutFileStream> EQIndex;
+        mutable std::optional<OutPutFileStream> functionIndex;
         QFile fileFigureIndex;
         QFile fileSourceIndex;
         QFile fileDirTreeSourceIndex;
         QFile fileCommandSourceIndex;
         QFile fileTableIndex;
         QFile fileEQIndex;
+        QFile fileFunctionIndex;
     public:
         ThisGlobalTexBuilder() {
             fileEQIndex.setFileName(getOutPutFileFullPath(qsl("EQIndex.tex")));
@@ -96,18 +98,21 @@ namespace {
             fileDirTreeSourceIndex.setFileName(getOutPutFileFullPath(qsl("dirTreeSourceIndex.tex")));
             fileCommandSourceIndex.setFileName(getOutPutFileFullPath(qsl("commandSourceIndex.tex")));
             fileTableIndex.setFileName(getOutPutFileFullPath(qsl("tableIndex.tex")));
+            fileFunctionIndex.setFileName(getOutPutFileFullPath(qsl("functionIndex.tex")));
             fileFigureIndex.open(QIODevice::WriteOnly);
             fileSourceIndex.open(QIODevice::WriteOnly);
             fileCommandSourceIndex.open(QIODevice::WriteOnly);
             fileDirTreeSourceIndex.open(QIODevice::WriteOnly);
             fileTableIndex.open(QIODevice::WriteOnly);
             fileEQIndex.open(QIODevice::WriteOnly);
+            fileFunctionIndex.open(QIODevice::WriteOnly);
             figureIndex.emplace(&fileFigureIndex);
             sourceIndex.emplace(&fileSourceIndex);
             dirTreeSourceIndex.emplace(&fileDirTreeSourceIndex);
             commandSourceIndex.emplace(&fileCommandSourceIndex);
             tableIndex.emplace(&fileTableIndex);
             EQIndex.emplace(&fileEQIndex);
+            functionIndex.emplace(&fileFigureIndex);
         }
         QTextStream & getFigureIndex() const override {
             return *figureIndex;
@@ -127,6 +132,9 @@ namespace {
         QTextStream & getEQIndex() const override {
             return *EQIndex;
         }
+        QTextStream & getFunctionIndex() const override {
+            return *functionIndex;
+        }
         ~ThisGlobalTexBuilder() {
             commandSourceIndex.reset();
             dirTreeSourceIndex.reset();
@@ -134,6 +142,7 @@ namespace {
             figureIndex.reset();
             tableIndex.reset();
             EQIndex.reset();
+            functionIndex.reset();
         }
     };
 }
