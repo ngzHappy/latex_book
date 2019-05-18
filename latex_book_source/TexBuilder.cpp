@@ -2628,14 +2628,15 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
 
     bool isFirstLine = true;
     bool justAfterTemplate = false;
+    const QString varFirstLine = varLines[0];
     for (const auto & varLine : varLines) {
         bool isTemplateLine = false;
         if (isFirstLine) {
             isTemplateLine = varLine.startsWith(qsl("template"));
-            justAfterTemplate = true;
         }
         if (isTemplateLine) {
             isFirstLine = false;
+            justAfterTemplate = true;
             varOut << qsl(R"(\makecell[l]{)");
             varOut << qsl(R"(\scriptsize\itshape\sourcefontone{)");
             varOut << varLine;
@@ -2654,7 +2655,8 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
                 if (varLine.leftSpace == 0) {
                     varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{)");
                 } else {
-                    varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{\hspace{%1ex})").arg(1+varLine.leftSpace);
+                    varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{\phantom{%1})")
+                        .arg(varFirstLine.left(varLine.leftSpace));
                 }
             }
             varOut << varLine;
