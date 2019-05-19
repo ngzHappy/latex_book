@@ -990,12 +990,15 @@ title=\treeindexnumbernameone\ \ref{%1}
 
                 varString = qsl(R"(%\begin{spacing}{1.0}
 %\FloatBarrier
-\refstepcounter{commandnumber}\label{%1}    %增加命令行编号
+%\refstepcounter{commandnumber}\label{%1}    %增加命令行编号
 \begin{thebookfilesourceonecommand}[escapeinside={%3}{%4},
 caption=GoodLuck,
-title=\commandnumbernameone \thecommandnumber
+title=\commandnumbernameone\ \ref{%1}
 %2
 )").arg(varKeyLabel).arg(varArgs2[1]).arg(varLeftKey).arg(varRightKey);
+                varString += varLeftKey;
+                varString += qsl(R"(\refstepcounter{commandnumber}\label{%1})").arg(varKeyLabel);
+                varString += varRightKey;
                 varString += varFullFile;
                 varString += varLeftKey;
                 varString += getMarginpar(qsl(R"(\commandnumbernameone)"), qsl(R"(\thecommandnumber)"));
