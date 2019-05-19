@@ -890,13 +890,16 @@ title=\filesourcenumbernameone\ \ref{%1}
 
                 varString = qsl(R"(%\begin{spacing}{1.0}
 %\FloatBarrier
-\refstepcounter{treeindexnumber}\label{%1}    %增加目录树编号
+%\refstepcounter{treeindexnumber}\label{%1}    %增加目录树编号
 \begin{thebookfilesourceonepathtree}[escapeinside={%3}{%4},
 caption=GoodLuck,
 numbers=none,
-title=\treeindexnumbernameone \thetreeindexnumber
+title=\treeindexnumbernameone\ \ref{%1}
 %2
 )").arg(varKeyLabel).arg(varArgs2[1]).arg(varLeftKey).arg(varRightKey);
+                varString += varLeftKey;
+                varString += qsl(R"(\refstepcounter{treeindexnumber}\label{%1})").arg(varKeyLabel);
+                varString += varRightKey;
                 varString += varFullFile;
                 varString += varLeftKey;
                 varString += getMarginpar(qsl(R"(\treeindexnumbernameone)"), qsl(R"(\thetreeindexnumber)"));
