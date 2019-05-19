@@ -789,13 +789,16 @@ public:
                 }
 
                 varString = qsl(R"(%\begin{spacing}{1.0}
-\refstepcounter{filesourcenumber}\label{%1}    %增加源代码编号
+%\refstepcounter{filesourcenumber}\label{%1}    %增加源代码编号
 \FloatBarrier                                  %强制完成浮动体布局
 \begin{thebookfilesourceone}[escapeinside={%3}{%4},
 caption=GoodLuck,
-title=\filesourcenumbernameone \thefilesourcenumber
+title=\filesourcenumbernameone\ \ref{%1}
 %2
 )").arg(varKeyLabel).arg(varArgs2[1]).arg(varLeftKey).arg(varRightKey);
+                varString += varLeftKey;
+                varString += qsl(R"(\refstepcounter{filesourcenumber}\label{%1})").arg(varKeyLabel);
+                varString += varRightKey;
                 varString += varFullFile;
                 varString += varLeftKey;
                 varString += getMarginpar(qsl(R"(\filesourcenumbernameone)"), qsl(R"(\thefilesourcenumber)"));
