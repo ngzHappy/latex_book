@@ -22,6 +22,7 @@ _insertKey()
 *****/
 
 inline static bool buildFunctionString(QFile * argFile, const QString & argPath);
+inline static QString getFunctionTypeFromLabel(const QString & arg);
 
 /*find max * between ( @ or @ )*/
 static inline int getMaxStartCount(const QString & arg, const QString & argTheFileName) {
@@ -1427,7 +1428,7 @@ title=\commandnumbernameone\ \ref{%1}
                     varIndexStream << qsl(R"++++(}\dotfill\pageref{)++++");
                     varIndexStream << varKeyLabel;
                     varIndexStream << qsl(R"++++(}%)++++");
-                    varIndexStream << varKeyLabel;
+                    varIndexStream << getFunctionTypeFromLabel(varKeyLabel) << qsl("    %") << varKeyLabel;
                     varIndexStream << endl << endl;
                 }
 
@@ -2571,6 +2572,34 @@ extern QString theBookPlainTextToTexText(const QString & arg) {
     return plainStringToTexString(arg);
 }
 
+inline static QString getFunctionTypeFromLabel(const QString & arg) {
+    if (arg.isEmpty()) {
+        return qsl("C++");
+    }
+    if (!arg[0].isDigit()) {
+        return qsl("C++");
+    }
+    std::vector< QChar > varAns;
+    auto varPos = arg.constBegin();
+    auto varEnd = arg.constEnd();
+    for (; varPos != varEnd; ++varPos) {
+        if (varPos->isDigit()) {
+            continue;
+        }
+        break;
+    }
+    for (; varPos != varEnd; ++varPos) {
+        if (varPos->isDigit()) {
+            break;
+        }
+        varAns.push_back(*varPos);
+    }
+    if (varAns.empty()) {
+        return qsl("C++");
+    }
+    return QString{ varAns.data() ,static_cast<int>(varAns.size()) };
+}
+
 inline static bool buildFunctionString(QFile * argFile, const QString & argPath) {
 
     /* https://github.com/nanguazhude/MyLearnLatex/blob/master/GuZhenRen1/cplusplus/main.cpp */
@@ -2636,7 +2665,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
             break;
         }
 
-        if (varFirstLine.isEmpty() &&(!varLineTrimed.startsWith(qsl("template")))) {
+        if (varFirstLine.isEmpty() && (!varLineTrimed.startsWith(qsl("template")))) {
             varFirstLine = varLineTrimed;
         }
         varLines.push_back({ plainStringToTexString(std::move(varLineTrimed), varReplaceDutys) ,varN });
@@ -2648,7 +2677,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
 
     bool isFirstLine = true;
     bool justAfterTemplate = false;
-    
+
     for (const auto & varLine : varLines) {
         bool isTemplateLine = false;
         if (isFirstLine) {
@@ -2676,7 +2705,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
                     varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{)");
                 } else {
                     varOut << qsl(R"(\\[-6pt]\small\itshape\sourcefontone{\phantom{%1})")
-                        .arg(plainStringToTexString( varFirstLine.left(varLine.leftSpace) ,varReplaceDutys ) );
+                        .arg(plainStringToTexString(varFirstLine.left(varLine.leftSpace), varReplaceDutys));
                 }
             }
             varOut << varLine;
