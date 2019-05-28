@@ -11,6 +11,8 @@
 #include <limits>
 #include <regex>
 #include <string>
+#include <functional>
+
 extern bool updateKeywords(const QString & argFullPath);
 
 GlobalTexBuilder::~GlobalTexBuilder() {
@@ -2089,84 +2091,155 @@ title=\commandnumbernameone\ \ref{%1}
         auto varAns = varData.emplace(varPos);
         currentParseState->line_number = (*varPos)->line_number;
 
-        if (varKey.name == theBookReadCommandFileSouce()) {
-            auto varValue =
-                std::make_shared< KeyCommandFileSouceString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (varKey.name == theBookChapter()) {
-            auto varValue =
-                std::make_shared< KeyChapterString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (varKey.name == theBookFunctionIndex()) {
-            auto varValue =
-                std::make_shared< KeyFunctionLabelString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (varKey.name == theBookForeword()) {
-            auto varValue =
-                std::make_shared< KeyForewordString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (theBookSection() == varKey.name) {
-            auto varValue =
-                std::make_shared< KeySectionString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (theBookSubSection() == varKey.name) {
-            auto varValue =
-                std::make_shared< KeySubSectionString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (theBookSubSubSection() == varKey.name) {
-            auto varValue =
-                std::make_shared< KeySubSubSectionString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (theBookImage() == varKey.name) {
-            auto varValue =
-                std::make_shared< KeyImageString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (theBookReadFileSouce() == varKey.name) {
-            auto varValue =
-                std::make_shared< KeyFileSouceString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (theBookTable() == varKey.name) {
-            auto varValue =
-                std::make_shared< KeyTableString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (theBookReadTreeFileSouce() == varKey.name) {
-            auto varValue =
-                std::make_shared< KeyTreeFileSouceString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (theBookEqual() == varKey.name) {
-            auto varValue =
-                std::make_shared< KeyEqualsString >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
-        } else if (varKey.name == theBookText()) {
-            auto varValue =
-                std::make_shared< KeyTextSring >(varDeepth,
-                    varAns,
-                    currentParseState);
-            *varAns = varValue;
+        using CurrentParseState = std::remove_reference_t< decltype(currentParseState) >;
+        using VarAns = std::remove_reference_t<  decltype(varAns) >;
+        using VarDeepth = int;
+        typedef void(*FunctionType)(CurrentParseState &, VarAns &, const VarDeepth &);
+        using FunctionMap = std::map< QString, FunctionType >;
+
+        static const FunctionMap globalFunctionMap = []() {
+            FunctionMap varFunctionMap;
+
+            varFunctionMap[theBookReadCommandFileSouce()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyCommandFileSouceString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookChapter()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyChapterString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookFunctionIndex()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyFunctionLabelString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookForeword()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyForewordString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookSection()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeySectionString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookSubSection()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeySubSectionString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookSubSubSection()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeySubSubSectionString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookImage()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyImageString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookReadFileSouce()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyFileSouceString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookTable()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyTableString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookReadTreeFileSouce()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyTreeFileSouceString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookEqual()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyEqualsString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookText()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyTextSring >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            return std::move(varFunctionMap);
+        }();
+
+        {
+            auto varMapPos = globalFunctionMap.find(varKey.name);
+            if (varMapPos != globalFunctionMap.end()) {
+                (varMapPos->second)(currentParseState, varAns, varDeepth);
+            } else {
+                qWarning() << qsl("can not find : ") << varKey.name;
+            }
         }
 
         the_book_assert((*varAns), u8R"(逻辑错误！)"sv, currentParseState->line_number);
