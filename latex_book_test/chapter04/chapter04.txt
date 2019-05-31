@@ -48,4 +48,3 @@ tree > dir.txt
 % FloatBarrier
 % :tex_raw:[=[%the_book_insert{}]=]
 ]]
-

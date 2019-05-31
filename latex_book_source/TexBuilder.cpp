@@ -1157,7 +1157,7 @@ title=\commandnumbernameone\ \ref{%1}
 )===");
                 varString += qsl(R"===(    colback=sourcegrayone,
 )===");
-                varString += qsl(R"===(    colframe=sourcegrayone   
+                varString += qsl(R"===(    colframe=sourcegrayone
 )===");
                 varString += varArgs2[1].trimmed()/*]*/;
 
@@ -2791,4 +2791,3 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
 
     return true;
 }
-

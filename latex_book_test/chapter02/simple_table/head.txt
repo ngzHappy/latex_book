@@ -19,4 +19,3 @@
 % FloatBarrier
 % :tex_raw:[=[%the_book_insert{}]=]
 ]]
-

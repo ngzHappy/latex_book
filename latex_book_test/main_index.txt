@@ -350,4 +350,3 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 % FloatBarrier
 % :tex_raw:[=[%the_book_insert{}]=]
 ]]
-
