@@ -17,9 +17,54 @@
 
 extern bool updateKeywords(const QString & argFullPath);
 
-inline static QString \uacaf_after_section(const QString & ) {
-    return qsl(R"___(
+inline static QString \uacaf_after_section(const QString & arg1) {
+    if (arg1 == qsl("chapter")) {
+        return qsl(R"___(
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\counterwithin{figure}{section}
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+
+\counterwithin{table}{section}
+\renewcommand\thetable{\thesection.\arabic{table}}
+
+\counterwithin{filesourcenumber}{section}
+\renewcommand\thefilesourcenumber{\thesection.\arabic{filesourcenumber}}
+
+\counterwithin{commandnumber}{section}
+\renewcommand\thecommandnumber{\thesection.\arabic{commandnumber}}
+
+\counterwithin{treeindexnumber}{section}
+\renewcommand\thetreeindexnumber{\thesection.\arabic{treeindexnumber}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 )___");
+    }
+    if (arg1 == qsl("foreword")) {
+        return qsl(R"___(
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\counterwithin{figure}{chapter}
+\renewcommand\thefigure{\Alph{figure}}
+
+\counterwithin{table}{chapter}
+\renewcommand\thetable{\Alph{table}}
+
+\counterwithin{filesourcenumber}{chapter}
+\renewcommand\thefilesourcenumber{\Alph{filesourcenumber}}
+
+\counterwithin{commandnumber}{chapter}
+\renewcommand\thecommandnumber{\Alph{commandnumber}}
+
+\counterwithin{treeindexnumber}{chapter}
+\renewcommand\thetreeindexnumber{\Alph{treeindexnumber}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+)___");
+    }
+    return qsl(R"___(
+%     %1
+)___").arg(arg1);
 }
 
 GlobalTexBuilder::~GlobalTexBuilder() {
@@ -704,6 +749,7 @@ public:
 + qsl(R"(}
 \setcounter{secnumdepth}{4}                   %恢复编号，目录深度为4
 )");
+                varString += \uacaf_after_section(qsl(R"___(foreword)___"));
                 *v = std::make_shared<RawString>(varString, v, state);
             }
             /*删除整个函数*/
@@ -1359,7 +1405,7 @@ title=\commandnumbernameone\ \ref{%1}
 }\label{)") + varKeyLabel
 + qsl(R"(}
 )");
-                varString+=\uacaf_after_section(qsl(R"___(chapter)___"));
+                varString += \uacaf_after_section(qsl(R"___(chapter)___"));
                 *v = std::make_shared<RawString>(varString, v, state);
             }
             /*删除整个函数*/
