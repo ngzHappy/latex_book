@@ -593,7 +593,7 @@ public:
                         ->getTableIndex();
                     varIndexStream << qsl(R"++++(\noindent\tablename\ \ref{)++++");
                     varIndexStream << varKeyLabel;
-                    varIndexStream << qsl(R"++++(},\dotfill\pageref{)++++");
+                    varIndexStream << qsl(R"++++(}\dotfill\pageref{)++++");
                     varIndexStream << varKeyLabel;
                     varIndexStream << qsl(R"++++(}%)++++");
                     varIndexStream << varKeyLabel;
