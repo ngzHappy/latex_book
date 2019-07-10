@@ -1,4 +1,6 @@
-﻿#include "TexBuilder.hpp"
+﻿#ifndef Q_MOC_RUN
+
+#include "TexBuilder.hpp"
 #include "OutPutStream.hpp"
 #include "ReadSource.hpp"
 #include "GetTheBookConstexpr.hpp"
@@ -14,6 +16,11 @@
 #include <functional>
 
 extern bool updateKeywords(const QString & argFullPath);
+
+inline static QString \uacaf_after_section(const QString & ) {
+    return qsl(R"___(
+)___");
+}
 
 GlobalTexBuilder::~GlobalTexBuilder() {
 }
@@ -1352,6 +1359,7 @@ title=\commandnumbernameone\ \ref{%1}
 }\label{)") + varKeyLabel
 + qsl(R"(}
 )");
+                varString+=\uacaf_after_section(qsl(R"___(chapter)___"));
                 *v = std::make_shared<RawString>(varString, v, state);
             }
             /*删除整个函数*/
@@ -1494,6 +1502,7 @@ title=\commandnumbernameone\ \ref{%1}
 }\label{)") + varKeyLabel
 + qsl(R"(}
 )");
+                varString += \uacaf_after_section(qsl("section"));
                 *v = std::make_shared<RawString>(varString, v, state);
             }
             /*删除整个函数*/
@@ -1552,6 +1561,7 @@ title=\commandnumbernameone\ \ref{%1}
 }\label{)") + varKeyLabel
 + qsl(R"(}
 )");
+                varString += \uacaf_after_section(qsl("subsection"));
                 *v = std::make_shared<RawString>(varString, v, state);
             }
             /*删除整个函数*/
@@ -2791,3 +2801,5 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
 
     return true;
 }
+
+#endif
