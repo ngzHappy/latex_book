@@ -40,24 +40,24 @@ inline static QString \uacaf_after_section(const QString & arg1) {
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 )___");
     }
-    if (arg1 == qsl("foreword")) {
+    if (arg1 == qsl("foreword")) {/* http://www.personal.ceu.hu/tex/counters.htm#roman */
         return qsl(R"___(
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \counterwithin{figure}{chapter}
-\renewcommand\thefigure{\Alph{figure}}
+\renewcommand\thefigure{\Roman{figure}}
 
 \counterwithin{table}{chapter}
-\renewcommand\thetable{\Alph{table}}
+\renewcommand\thetable{\Roman{table}}
 
 \counterwithin{filesourcenumber}{chapter}
-\renewcommand\thefilesourcenumber{\Alph{filesourcenumber}}
+\renewcommand\thefilesourcenumber{\Roman{filesourcenumber}}
 
 \counterwithin{commandnumber}{chapter}
-\renewcommand\thecommandnumber{\Alph{commandnumber}}
+\renewcommand\thecommandnumber{\Roman{commandnumber}}
 
 \counterwithin{treeindexnumber}{chapter}
-\renewcommand\thetreeindexnumber{\Alph{treeindexnumber}}
+\renewcommand\thetreeindexnumber{\Roman{treeindexnumber}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 )___");
