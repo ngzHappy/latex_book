@@ -85,6 +85,7 @@ marginparwidth=2.1cm       %边注宽度
 
 \usepackage{fontspec}
 \definecolor{sourcegrayone}{rgb}{0.99,0.99,0.99}  %源代码背景颜色
+\definecolor{sourcegraytwo}{rgb}{0.88,0.88,0.88}  %算式背景颜色
 \newfontfamily\sourcefontone{Consolas}            %源代码字体
 \newfontfamily\sourcefontthree{DejaVu Sans Mono}  %源代码字体
 %sudo apt-get install ttf-mscorefonts-installer   %linux安装字体

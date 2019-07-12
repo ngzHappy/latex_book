@@ -1208,9 +1208,9 @@ title=\commandnumbernameone\ \ref{%1}
 )===");
                 varString += qsl(R"===(    rightrule=0pt,
 )===");
-                varString += qsl(R"===(    colback=sourcegrayone,
+                varString += qsl(R"===(    colback=sourcegraytwo,
 )===");
-                varString += qsl(R"===(    colframe=sourcegrayone
+                varString += qsl(R"===(    colframe=sourcegraytwo
 )===");
                 varString += varArgs2[1].trimmed()/*]*/;
 
