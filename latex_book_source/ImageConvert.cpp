@@ -50,7 +50,7 @@ static inline bool convert_image_to_pdf(
     const QImage & argImage,
     const QString argPdfFileName) {
 
-    const auto varImage = argImage;
+    auto varImage = argImage.convertToFormat(QImage::Format_RGBA8888);
 
     if (varImage.height() < 1) {
         return false;
@@ -66,11 +66,12 @@ static inline bool convert_image_to_pdf(
         return false;
     }
 
+    constexpr const auto varRate = 360 / 72;
     QPdfWriter varWriter{ &varPDFFile };
 
     {
         varWriter.setMargins({ 0,0,0,0 });
-        varWriter.setResolution(72);
+        varWriter.setResolution(72 * varRate);
         varWriter.setPageSize(QPageSize(
             QSize{ varImage.width(),varImage.height() },
             QPageSize::Point));
@@ -84,7 +85,14 @@ static inline bool convert_image_to_pdf(
         QPainter::HighQualityAntialiasing |
         QPainter::LosslessImageRendering);
 
-    varPainter.drawImage(0, 0, varImage);
+    varImage = varImage.scaled(varImage.size()*varRate,
+        Qt::IgnoreAspectRatio,
+        Qt::SmoothTransformation);
+
+    varPainter.drawImage(varPainter.viewport(),
+        varImage,
+        { 0,0,varImage.width(),varImage.height() },
+        Qt::AutoColor| Qt::NoFormatConversion);
 
     return true;
 
