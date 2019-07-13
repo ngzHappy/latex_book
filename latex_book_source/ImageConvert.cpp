@@ -50,38 +50,14 @@ static inline bool convert_image_to_pdf(
     const QImage & argImage,
     const QString argPdfFileName) {
 
-    const auto varImage
-        = argImage.convertToFormat(QImage::Format_RGBA8888_Premultiplied);
+    const auto varImage = argImage;
 
     if (varImage.height() < 1) {
         return false;
     }
+
     if (varImage.width() < 1) {
         return false;
-    }
-
-    /* For example,
-     * A4 is defined by the standard as 210mm x 297mm,
-     * 8.27in x 11.69in,
-     * or 595pt x 842pt.*/
-
-     /*460大概是16.2cm*/
-    auto varImgageWidth = 460;
-    auto varImageHeigth = 460;
-
-    /*限制图片的最大长或宽...*/
-    if (varImage.height() > varImage.width()) {/*图片的高度大于长度...*/
-        const auto varR = double(varImage.width())
-            / double(varImage.height());
-        /*调整宽度*/
-        varImgageWidth = static_cast<int>(0.5 +
-            varImageHeigth * varR);
-    } else if (varImage.height() < varImage.width()) {/*图片的高度大于宽度...*/
-        const auto varR = double(varImage.height())
-            / double(varImage.width());
-        /*调整高度*/
-        varImageHeigth = static_cast<int>(0.5 +
-            varImgageWidth * varR);
     }
 
     /*打开写文件*/
@@ -92,25 +68,26 @@ static inline bool convert_image_to_pdf(
 
     QPdfWriter varWriter{ &varPDFFile };
 
-    {/*设置文件参数*/
+    constexpr const auto varRate = 2;
+
+    {
         varWriter.setMargins({ 0,0,0,0 });
-        /*设置分辨率*/
-        varWriter.setResolution(720)/*每英寸像素点数DPI*/;
-        /*设置pdf文档大小*/
-        const QPageSize varSize{/*QSize是72 dpi时的值*/
-            QSize{varImgageWidth,varImageHeigth} ,QPageSize::Point/*72*/ };
-        varWriter.setPageSize(varSize);
+        varWriter.setResolution(72 * varRate);
+        varWriter.setPageSize(QPageSize(
+            QSize{ varImage.width(),varImage.height() },
+            QPageSize::Point));
     }
 
-    /*写文件*/
     QPainter varPainter{ &varWriter };
-    /*获得pdf文件真实像素大小*/
-    const auto varSizeOfViewPort =
-        varPainter.viewport().size();
-    /*将图片绘制到pdf文件*/
+    varPainter.setRenderHints(QPainter::NonCosmeticDefaultPen |
+        QPainter::Antialiasing |
+        QPainter::TextAntialiasing |
+        QPainter::SmoothPixmapTransform |
+        QPainter::HighQualityAntialiasing |
+        QPainter::LosslessImageRendering);
+
     varPainter.drawImage(0, 0,
-        varImage.scaled(
-            varSizeOfViewPort,
+        varImage.scaled(varImage.size()*varRate,
             Qt::IgnoreAspectRatio,
             Qt::SmoothTransformation));
 
