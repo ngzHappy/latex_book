@@ -68,11 +68,9 @@ static inline bool convert_image_to_pdf(
 
     QPdfWriter varWriter{ &varPDFFile };
 
-    constexpr const auto varRate = 2;
-
     {
         varWriter.setMargins({ 0,0,0,0 });
-        varWriter.setResolution(72 * varRate);
+        varWriter.setResolution(72);
         varWriter.setPageSize(QPageSize(
             QSize{ varImage.width(),varImage.height() },
             QPageSize::Point));
@@ -86,10 +84,7 @@ static inline bool convert_image_to_pdf(
         QPainter::HighQualityAntialiasing |
         QPainter::LosslessImageRendering);
 
-    varPainter.drawImage(0, 0,
-        varImage.scaled(varImage.size()*varRate,
-            Qt::IgnoreAspectRatio,
-            Qt::SmoothTransformation));
+    varPainter.drawImage(0, 0, varImage);
 
     return true;
 
