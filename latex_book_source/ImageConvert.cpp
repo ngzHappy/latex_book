@@ -75,6 +75,7 @@ static inline bool convert_image_to_pdf(
         varWriter.setPageSize(QPageSize(
             QSize{ varImage.width(),varImage.height() },
             QPageSize::Point));
+        varWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_1_6);
     }
 
     QPainter varPainter{ &varWriter };
