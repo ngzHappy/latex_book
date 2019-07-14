@@ -148,7 +148,7 @@ belowcaptionskip=5pt
 % Calibri
 % http://www.uisdc.com/western-fonts-typesetting
 \newfontfamily{\sourcefontfive}{Calibri}
-\newenvironment{littlelongworld}
+\newenvironment{littlelongword}
 {  \small         \\\hspace*{\fill} \slshape\sourcefontfive   }
 {                   \hspace*{\fill}\\ }
 
@@ -343,7 +343,7 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 % the_book_chapter the_book_subsection the_book_subsubsection
 % the_book_section the_book_image the_book_table
 % the_book_file the_book_tree_file the_book_command_file
-% littlelongworld tabbing ref
+% littlelongword tabbing ref
 % figurename tablename filesourcenumbernameone
 % treeindexnumbernameone commandnumbernameone footnote
 % item itemize comment textbullet

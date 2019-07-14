@@ -18,7 +18,7 @@
 % the_book_section the_book_image the_book_table
 % the_book_file the_book_tree_file the_book_command_file
 % the_book_eq the_book_function_index
-% littlelongworld tabbing ref
+% littlelongword tabbing ref
 % figurename tablename filesourcenumbernameone
 % treeindexnumbernameone commandnumbernameone footnote
 % item itemize comment textbullet
