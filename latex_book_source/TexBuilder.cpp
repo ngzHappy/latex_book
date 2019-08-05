@@ -17,6 +17,27 @@
 
 extern bool updateKeywords(const QString & argFullPath);
 
+inline static QString \uacaf_before_section(const QString & arg1) {
+    
+    if (arg1 == qsl("chapter")) {
+        return qsl(R"(\titleformat{\chapter}[display]
+ {\normalfont\sffamily\bfseries\Huge}
+ {\renewcommand{\thechapter}{\arabic{chapter}}\hspace*{\fill}\colorbox{black}{\parbox[c][1.1cm][c]{1.3cm}{\centering\textcolor{white}  
+ {\Huge\thechapter}}}\hspace*{\fill}}
+ {-1ex}
+ {\vspace*{.4ex}\titlerule\vspace{.3ex}}
+ [\vspace{.2ex}\titlerule])");
+    }
+
+    if (arg1 == qsl("foreword")) {
+        return qsl(R"(\titleformat{\chapter}[display]
+ {\normalfont\sffamily\bfseries\Huge}
+{}{}{})");
+    }
+
+    return {};
+}
+
 inline static QString \uacaf_after_section(const QString & arg1) {
     if (arg1 == qsl("chapter")) {
         return qsl(R"___(
@@ -741,9 +762,10 @@ public:
                 }
                 varString = qsl(R"(
 \cleardoublepage                              %增加空白页
+%1                                            %----------
 \setcounter{secnumdepth}{-2}                  %暂停编号，但加入目录
 \chapter{
-)") + theBookPlainTextToTexText(varArgs2[0])
+)").arg(\uacaf_before_section(qsl(R"___(foreword)___"))) + theBookPlainTextToTexText(varArgs2[0])
 + qsl(R"(
 }\label{)")
 + varKeyLabel
@@ -1401,8 +1423,9 @@ title=\commandnumbernameone\ \ref{%1}
                 }
                 varString = qsl(R"(%\FloatBarrier
 \cleardoublepage
+%1                         %---------------------------
 \chapter{
-)") + theBookPlainTextToTexText(varArgs2[0]) + qsl(R"(
+)").arg(\uacaf_before_section(qsl(R"___(chapter)___"))) + theBookPlainTextToTexText(varArgs2[0]) + qsl(R"(
 }\label{)") + varKeyLabel
 + qsl(R"(}
 )");
@@ -1544,8 +1567,9 @@ title=\commandnumbernameone\ \ref{%1}
                     return false;
                 }
                 varString = qsl(R"(\FloatBarrier
+%1        %----------------------------------
 \section{
-)") + theBookPlainTextToTexText(varArgs2[0]) + qsl(R"(
+)").arg(\uacaf_before_section(qsl(R"___(section)___"))) + theBookPlainTextToTexText(varArgs2[0]) + qsl(R"(
 }\label{)") + varKeyLabel
 + qsl(R"(}
 )");
@@ -1603,8 +1627,9 @@ title=\commandnumbernameone\ \ref{%1}
                     return false;
                 }
                 varString = qsl(R"(\FloatBarrier
+%1 %------------------------------
 \subsection{
-)") + theBookPlainTextToTexText(varArgs2[0]) + qsl(R"(
+)").arg(\uacaf_before_section(qsl(R"___(subsection)___"))) + theBookPlainTextToTexText(varArgs2[0]) + qsl(R"(
 }\label{)") + varKeyLabel
 + qsl(R"(}
 )");
