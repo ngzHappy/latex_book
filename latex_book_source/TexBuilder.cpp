@@ -25,8 +25,8 @@ inline static QString \uacaf_before_section(const QString & arg1) {
  {\renewcommand{\thechapter}{\arabic{chapter}}\hspace*{\fill}\colorbox{black}{\parbox[c][1.1cm][c]{1.3cm}{\centering\textcolor{white}  
  {\Huge\thechapter}}}\hspace*{\fill}}
  {-1ex}
- {\vspace*{.4ex}\titlerule\vspace{.3ex}}
- [\vspace{.2ex}\titlerule])");
+ {\vspace*{.4ex}{\titlerule[0.618pt]}\vspace{.3ex}}
+ [\vspace{.2ex}{\titlerule[1.854pt]}])");
     }
 
     if (arg1 == qsl("foreword")) {
