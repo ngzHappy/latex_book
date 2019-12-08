@@ -50,6 +50,7 @@ static inline bool convert_image_to_pdf(
     const QImage & argImage,
     const QString argPdfFileName) {
 
+    /* 将图片转为RGBA 888 强制内存对齐 */
     auto varImage = argImage.convertToFormat(QImage::Format_RGBA8888);
 
     if (varImage.height() < 1) {
@@ -60,13 +61,19 @@ static inline bool convert_image_to_pdf(
         return false;
     }
 
+    {/* 伪装为72 dpi */
+        varImage.setDevicePixelRatio(1);
+        varImage.setDotsPerMeterX(  2835  );
+        varImage.setDotsPerMeterY(  2835  );
+    }
+
     /*打开写文件*/
     QFile varPDFFile{ argPdfFileName };
     if (false == varPDFFile.open(QIODevice::WriteOnly)) {
         return false;
     }
 
-    constexpr const auto varRate = 360 / 72;
+    constexpr const auto varRate = 72 / 72;
     QPdfWriter varWriter{ &varPDFFile };
 
     {
@@ -86,9 +93,11 @@ static inline bool convert_image_to_pdf(
         QPainter::HighQualityAntialiasing |
         QPainter::LosslessImageRendering);
 
-    varImage = varImage.scaled(varImage.size()*varRate,
-        Qt::IgnoreAspectRatio,
-        Qt::SmoothTransformation);
+    if constexpr(varRate!=1){
+        varImage = varImage.scaled(varImage.size()*varRate,
+            Qt::IgnoreAspectRatio,
+            Qt::SmoothTransformation);
+    }
 
     varPainter.drawImage(varPainter.viewport(),
         varImage,
