@@ -76,6 +76,7 @@ extern bool updateKeywords(const QString & argFullPath) {
 % ______all_key_words
 % the_book_chapter the_book_subsection the_book_subsubsection
 % the_book_section the_book_image the_book_table
+% the_book_subparagraph the_book_paragraph
 % the_book_file the_book_tree_file the_book_command_file
 % the_book_eq the_book_function_index
 % littlelongword tabbing ref

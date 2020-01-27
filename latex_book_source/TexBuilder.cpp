@@ -169,6 +169,16 @@ static inline const QString & theBookFunctionIndex() {
     return varAns;
 }
 
+static inline const QString & theBookParagraph() {
+    const static auto varAns = qsl(":the_book_paragraph:");
+    return varAns;
+}
+
+static inline const QString & theBookSubParagraph() {
+    const static auto varAns = qsl(":the_book_subparagraph:");
+    return varAns;
+}
+
 static inline const QString & theBookChapter() {
     const static auto varAns = qsl(":the_book_chapter:");
     return varAns;
@@ -446,6 +456,8 @@ public:
             TypeSectionString,
             TypeSubSectionString,
             TypeSubSubSectionString,
+            TypeParagraphString,
+            TypeSubParagraphString,
             TypeFileSourceString,
             TypeTable,
             TypeImageString,
@@ -1384,6 +1396,128 @@ title=\commandnumbernameone\ \ref{%1}
 
     };
 
+    class KeySubParagraphString :
+        public FunctionOp {
+        using ThisType = KeySubParagraphString;
+    public:
+
+        inline KeySubParagraphString(
+            int deepthx,
+            item_list_pos p,
+            std::shared_ptr<ParseState> s)
+            :FunctionOp(deepthx, p, std::move(s)) {
+        }
+
+        virtual Type getType() const override {
+            return Type::TypeSubParagraphString;
+        }
+
+        bool toRawString(item_list_pos * arg) override {
+            /*将ans插入表*/
+            auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
+            bool isOk = false;
+            /*获得args*/
+            auto varArgs1 = getCallArgs(this->pos, 1, &isOk, this->state);
+            if (isOk == false) {
+                return false;
+            }
+            auto varArgs = argc_to_string(varArgs1);
+            /*将args转换为string*/
+            {
+                const GetTheBookConstexpr varConstexpr;
+                auto varString = varArgs[0];
+                const auto varKeyLabel = varString.trimmed();
+                auto varArgs2 = varConstexpr.getValues(varKeyLabel);
+                if (varArgs2.size() != 1) {
+                    return false;
+                }
+                varString = qsl(R"(%\FloatBarrier
+%\cleardoublepage
+%1                         %---------------------------
+\subparagraph{
+)").arg(\uacaf_before_section(qsl(R"___(subparagraph)___"))) + theBookPlainTextToTexText(varArgs2[0]) + qsl(R"(
+}\label{)") + varKeyLabel
++ qsl(R"(}
+)");
+                varString += \uacaf_after_section(qsl(R"___(subparagraph)___"));
+                *v = std::make_shared<RawString>(varString, v, state);
+            }
+            /*删除整个函数*/
+            state->data.erase(this->pos, ++varArgs1[0].second);
+            /*更新表数据*/
+            *arg = v;
+            return true;
+        }
+
+        bool isKeyFunction() const override {
+            return true;
+        }
+
+    };
+
+    class KeyParagraphString :
+        public FunctionOp {
+        using ThisType = KeyParagraphString;
+    public:
+
+        inline KeyParagraphString(
+            int deepthx,
+            item_list_pos p,
+            std::shared_ptr<ParseState> s)
+            :FunctionOp(deepthx, p, std::move(s)) {
+        }
+
+        virtual Type getType() const override {
+            return Type::TypeParagraphString;
+        }
+
+        bool toRawString(item_list_pos * arg) override {
+            /*将ans插入表*/
+            auto v = state->data.emplace(this->pos);
+            state->line_number = (*pos)->line_number;
+
+            bool isOk = false;
+            /*获得args*/
+            auto varArgs1 = getCallArgs(this->pos, 1, &isOk, this->state);
+            if (isOk == false) {
+                return false;
+            }
+            auto varArgs = argc_to_string(varArgs1);
+            /*将args转换为string*/
+            {
+                const GetTheBookConstexpr varConstexpr;
+                auto varString = varArgs[0];
+                const auto varKeyLabel = varString.trimmed();
+                auto varArgs2 = varConstexpr.getValues(varKeyLabel);
+                if (varArgs2.size() != 1) {
+                    return false;
+                }
+                varString = qsl(R"(%\FloatBarrier
+%\cleardoublepage
+%1                         %---------------------------
+\paragraph{
+)").arg(\uacaf_before_section(qsl(R"___(paragraph)___"))) + theBookPlainTextToTexText(varArgs2[0]) + qsl(R"(
+}\label{)") + varKeyLabel
++ qsl(R"(}
+)");
+                varString += \uacaf_after_section(qsl(R"___(paragraph)___"));
+                *v = std::make_shared<RawString>(varString, v, state);
+            }
+            /*删除整个函数*/
+            state->data.erase(this->pos, ++varArgs1[0].second);
+            /*更新表数据*/
+            *arg = v;
+            return true;
+        }
+
+        bool isKeyFunction() const override {
+            return true;
+        }
+
+    };
+
     class KeyChapterString :
         public FunctionOp {
         using ThisType = KeyChapterString;
@@ -1821,6 +1955,8 @@ title=\commandnumbernameone\ \ref{%1}
 
     static inline std::shared_ptr< std::set<FunctionKeys> > _keys_set() {
         auto varAns = std::make_shared<std::set<FunctionKeys>>();
+        varAns->emplace(theBookSubParagraph(), 1);
+        varAns->emplace(theBookParagraph(), 1);
         varAns->emplace(theBookChapter(), 1);
         varAns->emplace(theBookText(), 1);
         varAns->emplace(theBookForeword(), 1);
@@ -2187,6 +2323,26 @@ title=\commandnumbernameone\ \ref{%1}
                 const VarDeepth & varDeepth) {
                 auto varValue =
                     std::make_shared< KeyCommandFileSouceString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookParagraph()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeyParagraphString >(varDeepth,
+                        varAns,
+                        currentParseState);
+                *varAns = varValue;
+            };
+
+            varFunctionMap[theBookSubParagraph()] = [](CurrentParseState & currentParseState,
+                VarAns & varAns,
+                const VarDeepth & varDeepth) {
+                auto varValue =
+                    std::make_shared< KeySubParagraphString >(varDeepth,
                         varAns,
                         currentParseState);
                 *varAns = varValue;
