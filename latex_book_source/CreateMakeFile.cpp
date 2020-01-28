@@ -4,6 +4,7 @@
 #include <set>
 #include <list>
 #include <vector>
+#include <map>
 
 namespace this_file {
 
@@ -40,6 +41,9 @@ namespace this_file {
             }
             return std::move(varAns);
         }
+
+        /*:tex_raw:[[%the_book_write{filename}line]]*/
+        std::map<QString/*filename*/, std::list<QString>/*lines*/ > writeFileData;
 
     };
 }/*namespace this_fiel*/
@@ -94,6 +98,9 @@ public:
                 const static QRegularExpression varR_Insert{ QStringLiteral(
                     R"(^(?::tex_raw:\[[=]*\[)?\s*%the_book_insert\s*\{([^}]+)\}.*)") };
 
+                const static QRegularExpression varR_Write{ QStringLiteral(
+                   R"(^(?::tex_raw:\[[=]*\[)?\s*%the_book_write\s*\{([^}]+)\}([^\]]+).*)") };
+                
                 const auto & varR = varR_;
 
                 while (false == varStream.atEnd()) {
@@ -115,6 +122,17 @@ public:
                                     this_file::CreateMakeFileState::createADuty(varFile)
                                 );
                             }
+                            continue;
+                        }
+                    }
+
+                    {
+                        const auto varMatched =
+                            varR_Write.match(varLine);
+                        if (varMatched.hasMatch()) {
+                            const auto varInsert = varMatched.captured(1).trimmed();
+                            auto & varLines = arg->writeFileData[varInsert];
+                            varLines.push_back(varMatched.captured(2).trimmed());
                             continue;
                         }
                     }
@@ -153,6 +171,23 @@ public:
                     getOutPutFileDir().relativeFilePath(
                         varAns.data.canonicalFilePath());
                 varOutPut << endl;
+            }
+        }
+
+        {
+            for (const auto & varI : arg->writeFileData) {
+                QFile varFile{ getOutPutFileFullPath(varI.first) };
+                if (false == varFile.open(QIODevice::WriteOnly)) {
+                    /*???????????????????????????????????????*/
+                    continue;
+                }
+                QTextStream varWrite{ &varFile };
+                varWrite.setCodec(QTextCodec::codecForName("UTF-8"));
+                varWrite.setGenerateByteOrderMark(true);
+                for (const auto & varJ : varI.second) {
+                    varWrite << varJ;
+                    varWrite << '\n' << '\n';
+                }
             }
         }
 
@@ -202,7 +237,7 @@ public:
                 }
 
                 QTextStream varOut{ &varFile };
-                varOut.setCodec( QTextCodec::codecForName("UTF-8") );
+                varOut.setCodec(QTextCodec::codecForName("UTF-8"));
                 varOut.setGenerateByteOrderMark(true);
 
                 while (!varLines.empty()) {
