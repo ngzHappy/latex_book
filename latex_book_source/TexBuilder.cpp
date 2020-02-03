@@ -264,8 +264,9 @@ namespace _the_private {
             ans.emplace_back(std::regex(u8R"(@1@)", varRegexOption), std::string(u8R"(\)"sv));
             ans.emplace_back(std::regex(u8R"(@2@)", varRegexOption), std::string(u8R"({)"sv));
             ans.emplace_back(std::regex(u8R"(@3@)", varRegexOption), std::string(u8R"(})"sv));
-
-            ans.emplace_back(std::regex(u8R"(；)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"({\heiti{；}})"sv));
+            //\sourcefontthree
+            ans.emplace_back(std::regex(u8R"(')", varRegexOption), std::string(u8R"({\raisebox{1ex}{\makebox[.2em]{\kern.01em\vrule height.4ex\kern.01em}}})"sv));
+            ans.emplace_back(std::regex(u8R"(；)", varRegexOption), std::string(u8R"({\heiti{；}})"sv));
             ans.emplace_back(std::regex(u8R"(\+)", varRegexOption), std::string(u8R"({\sourcefonttwo{}+})"sv));
             ans.emplace_back(std::regex(u8R"(\*)", varRegexOption), std::string(u8R"(\raisebox{-0.35ex}{\sourcefonttwo{}*})"sv));
             ans.emplace_back(std::regex(u8R"(-)", varRegexOption), std::string(u8R"(\hspace{0.05em}\rule[0.7ex]{0.4em}{0.65pt}\hspace{0.05em})"sv));
