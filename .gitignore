@@ -53,3 +53,4 @@ release/
 *.tex
 *.fdb_latexmk
 *.fls
+app_startup/path.txt

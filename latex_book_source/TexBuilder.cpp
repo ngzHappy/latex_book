@@ -259,6 +259,12 @@ namespace _the_private {
                 std::regex_constants::ECMAScript |
                 std::regex_constants::optimize;
             std::vector< ReplaceItem > ans;
+
+            /* @\@ , @{@ , @}@ */
+            ans.emplace_back(std::regex(u8R"(@1@)", varRegexOption), std::string(u8R"(\)"sv));
+            ans.emplace_back(std::regex(u8R"(@2@)", varRegexOption), std::string(u8R"({)"sv));
+            ans.emplace_back(std::regex(u8R"(@3@)", varRegexOption), std::string(u8R"(})"sv));
+
             ans.emplace_back(std::regex(u8R"(；)", std::regex_constants::ECMAScript | std::regex_constants::optimize), std::string(u8R"({\heiti{；}})"sv));
             ans.emplace_back(std::regex(u8R"(\+)", varRegexOption), std::string(u8R"({\sourcefonttwo{}+})"sv));
             ans.emplace_back(std::regex(u8R"(\*)", varRegexOption), std::string(u8R"(\raisebox{-0.35ex}{\sourcefonttwo{}*})"sv));
@@ -281,6 +287,7 @@ namespace _the_private {
             ans.emplace_back(std::regex(u8R"(♂)", varRegexOption), std::string(u8R"(\female{})"sv));
             ans.emplace_back(std::regex(u8R"(★)", varRegexOption), std::string(u8R"(\ding{72})"sv));
             ans.emplace_back(std::regex(u8R"(☆)", varRegexOption), std::string(u8R"(\ding{73})"sv));
+           
             return std::move(ans);
         }();
 
