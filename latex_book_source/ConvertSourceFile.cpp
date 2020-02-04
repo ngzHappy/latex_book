@@ -18,6 +18,10 @@ namespace sstd_convert_source_file{
             int start{0};
             int length{0};
             StringType type{StringType::None};
+            inline TypedString(int a,int b,StringType c):
+                start(a),
+                length(b),
+                type(c){}
         };
 
         inline void convertSourceString(const QString & arg,
@@ -25,13 +29,6 @@ namespace sstd_convert_source_file{
                                  const QString & argRight,
                                  std::vector< TypedString > * argAns){
             int varLeft{0};
-            {
-                auto varPos = arg.indexOf( argLeft,varLeft  );
-                if(varPos>0){
-                    varLeft = varPos;
-                    argAns->emplace_back( 0 ,varPos,StringType::Changed  );
-                }
-            }
             for(;;){
                 auto varPos = arg.indexOf(  argLeft,varLeft  );
                 if(varPos<0){
@@ -39,8 +36,11 @@ namespace sstd_convert_source_file{
                     return;
                 }
                 auto varPosEnd =   arg.indexOf( argRight,varLeft  )                     ;
+                if(varPos>varLeft){
+                    argAns->emplace_back( varLeft ,varPos - varLeft,StringType::Changed  );
+                }
                 argAns->emplace_back(0,0,StringType::Left);
-                argAns->emplace_back( varLeft+argLeft.size() ,varPosEnd-varPos-argLeft.size(),StringType::Changed  );
+                argAns->emplace_back(varPos +argLeft.size() ,varPosEnd-varPos-argLeft.size(),StringType::Changed  );
                 argAns->emplace_back(0,0,StringType::Right);
                 varLeft = varPosEnd+argRight.size();
             }
@@ -77,6 +77,3 @@ QString convertSourceString(const QString & arg,
 }
 
 }/**/
-
-
-
