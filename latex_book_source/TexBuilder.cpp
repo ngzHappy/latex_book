@@ -15,6 +15,12 @@
 #include <string>
 #include <functional>
 
+namespace sstd_convert_source_file{
+extern QString convertSourceString(const QString & arg,
+                            const QString & argLeft,
+                            const QString & argRight);
+}/* namespace sstd_convert_source_file */
+
 extern bool updateKeywords(const QString & argFullPath);
 
 inline static QString \uacaf_before_section(const QString & arg1) {
@@ -898,7 +904,7 @@ title=\filesourcenumbernameone\ \ref{%1}
                 varString += varLeftKey;
                 varString += qsl(R"(\refstepcounter{filesourcenumber}\label{%1})").arg(varKeyLabel);
                 varString += varRightKey;
-                varString += varFullFile;
+                varString += sstd_convert_source_file::convertSourceString(varFullFile,varLeftKey,varRightKey);
                 varString += varLeftKey;
                 varString += getMarginpar(qsl(R"(\filesourcenumbernameone)"), qsl(R"(\thefilesourcenumber)"));
                 varString += varRightKey;
@@ -999,7 +1005,7 @@ title=\treeindexnumbernameone\ \ref{%1}
                 varString += varLeftKey;
                 varString += qsl(R"(\refstepcounter{treeindexnumber}\label{%1})").arg(varKeyLabel);
                 varString += varRightKey;
-                varString += varFullFile;
+                varString += sstd_convert_source_file::convertSourceString(varFullFile,varLeftKey,varRightKey);
                 varString += varLeftKey;
                 varString += getMarginpar(qsl(R"(\treeindexnumbernameone)"), qsl(R"(\thetreeindexnumber)"));
                 varString += varRightKey;
@@ -1098,7 +1104,7 @@ title=\commandnumbernameone\ \ref{%1}
                 varString += varLeftKey;
                 varString += qsl(R"(\refstepcounter{commandnumber}\label{%1})").arg(varKeyLabel);
                 varString += varRightKey;
-                varString += varFullFile;
+                varString += sstd_convert_source_file::convertSourceString(varFullFile,varLeftKey,varRightKey);
                 varString += varLeftKey;
                 varString += getMarginpar(qsl(R"(\commandnumbernameone)"), qsl(R"(\thecommandnumber)"));
                 varString += varRightKey;
