@@ -50,7 +50,7 @@ namespace sstd_convert_source_file{
         inline QString replaceQStringRef(const QStringRef & arg,const QString &l,const QString &r){
             QRegularExpression const static varRegex{ QStringLiteral(R"(-)") };
             QString varAns = arg.toString();
-            varAns.replace( varRegex,l+QStringLiteral(R"(\hspace{0.15em}\rule[0.52ex]{0.7em}{0.45pt}\hspace{0.15em})")+r );
+            varAns.replace( varRegex,l+QStringLiteral(R"(\hspace{0.05em}\rule[0.52ex]{0.5em}{0.48pt}\hspace{0.05em})")+r );
             return std::move(varAns);
         }
 
