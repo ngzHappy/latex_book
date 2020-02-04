@@ -36,3 +36,6 @@ SOURCES += $$PWD/UpdateKeyWords.cpp
 SOURCES += $$PWD/TheBookDir.cpp
 
 SOURCES += $$PWD/TryCreateDefaultProject.cpp
+SOURCES += $$PWD/ConvertSourceFile.cpp
+
+
