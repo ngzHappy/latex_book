@@ -42,6 +42,7 @@ namespace sstd_convert_source_file{
                 argAns->emplace_back(0,0,StringType::Left);
                 argAns->emplace_back( varLeft+argLeft.size() ,varPosEnd-varPos-argLeft.size(),StringType::Changed  );
                 argAns->emplace_back(0,0,StringType::Right);
+                varLeft = varPosEnd+argRight.size();
             }
 
         }
