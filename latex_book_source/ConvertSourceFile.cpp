@@ -47,10 +47,10 @@ namespace sstd_convert_source_file{
 
         }
 
-        inline QString replaceQStringRef(const QStringRef & arg){
+        inline QString replaceQStringRef(const QStringRef & arg,const QString &l,const QString &r){
             QRegularExpression const static varRegex{ QStringLiteral(R"(-)") };
             QString varAns = arg.toString();
-            varAns.replace( varRegex,QStringLiteral(R"(-)") );
+            varAns.replace( varRegex,l+QStringLiteral(R"(-)")+r );
             return std::move(varAns);
         }
 
@@ -71,7 +71,8 @@ QString convertSourceString(const QString & arg,
         QString ans;
         for(const auto & varI:data){
             if(varI.type == sstd_private::StringType::Changed ){
-                ans += sstd_private::replaceQStringRef( QStringRef(&arg, varI.start,varI.length ) ) ;
+                ans += sstd_private::replaceQStringRef( QStringRef(&arg, varI.start,varI.length ),
+                    argLeft,argRight) ;
             }else if(varI.type == sstd_private::StringType::Left){
                 ans += argLeft;
             }else if(varI.type == sstd_private::StringType::Right){
