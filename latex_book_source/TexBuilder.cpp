@@ -261,9 +261,9 @@ namespace _the_private {
             std::vector< ReplaceItem > ans;
 
             /* @\@ , @{@ , @}@ */
-            ans.emplace_back(std::regex(u8R"(@1@)", varRegexOption), std::string(u8R"(\)"sv));
-            ans.emplace_back(std::regex(u8R"(@2@)", varRegexOption), std::string(u8R"({)"sv));
-            ans.emplace_back(std::regex(u8R"(@3@)", varRegexOption), std::string(u8R"(})"sv));
+            ans.emplace_back(std::regex(u8R"(@'1'@)", varRegexOption), std::string(u8R"(\)"sv));
+            ans.emplace_back(std::regex(u8R"(@'2'@)", varRegexOption), std::string(u8R"({)"sv));
+            ans.emplace_back(std::regex(u8R"(@'3'@)", varRegexOption), std::string(u8R"(})"sv));
             //\sourcefontthree
             ans.emplace_back(std::regex(u8R"(')", varRegexOption), std::string(u8R"({\raisebox{1.1ex}{\makebox[.2em]{\kern.01em\vrule height.4ex width 0.05em\kern.01em}}})"sv));
             ans.emplace_back(std::regex(u8R"(；)", varRegexOption), std::string(u8R"({\heiti{；}})"sv));
