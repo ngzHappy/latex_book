@@ -31,13 +31,13 @@ namespace sstd_convert_source_file{
             int varLeft{0};
             for(;;){
                 auto varPos = arg.indexOf(  argLeft,varLeft  );
-                if(varPos<0){
-                    argAns->emplace_back ( varLeft, arg.size()-varLeft   ,StringType::Changed    );
+                if(varPos<0){/*将最后的部分输出...*/
+                    argAns->emplace_back ( varLeft, arg.size()-varLeft ,StringType::None );
                     return;
                 }
-                auto varPosEnd =   arg.indexOf( argRight,varLeft  )                     ;
-                if(varPos>varLeft){
-                    argAns->emplace_back( varLeft ,varPos - varLeft,StringType::Changed  );
+                auto varPosEnd =   arg.indexOf( argRight,varLeft  );
+                if(varPos>varLeft){/*将前面的部分输出...*/
+                    argAns->emplace_back( varLeft ,varPos - varLeft,StringType::None );
                 }
                 argAns->emplace_back(0,0,StringType::Left);
                 argAns->emplace_back(varPos +argLeft.size() ,varPosEnd-varPos-argLeft.size(),StringType::Changed  );
@@ -50,7 +50,7 @@ namespace sstd_convert_source_file{
         inline QString replaceQStringRef(const QStringRef & arg,const QString &l,const QString &r){
             QRegularExpression const static varRegex{ QStringLiteral(R"(-)") };
             QString varAns = arg.toString();
-            varAns.replace( varRegex,l+QStringLiteral(R"(-)")+r );
+            varAns.replace( varRegex,l+QStringLiteral(R"(\hspace{0.15em}\rule[0.52ex]{0.7em}{0.45pt}\hspace{0.15em})")+r );
             return std::move(varAns);
         }
 
@@ -70,10 +70,12 @@ QString convertSourceString(const QString & arg,
     {
         QString ans;
         for(const auto & varI:data){
-            if(varI.type == sstd_private::StringType::Changed ){
+            if(varI.type == sstd_private::StringType::None ){
                 ans += sstd_private::replaceQStringRef( QStringRef(&arg, varI.start,varI.length ),
                     argLeft,argRight) ;
-            }else if(varI.type == sstd_private::StringType::Left){
+            } else if (varI.type == sstd_private::StringType::Changed) {
+                ans +=  QStringRef(&arg, varI.start, varI.length);
+            } else if (varI.type == sstd_private::StringType::Left) {
                 ans += argLeft;
             }else if(varI.type == sstd_private::StringType::Right){
                 ans += argRight;
