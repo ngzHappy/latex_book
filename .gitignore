@@ -54,3 +54,4 @@ release/
 *.fdb_latexmk
 *.fls
 app_startup/path.txt
+latex_book_resource.rc
