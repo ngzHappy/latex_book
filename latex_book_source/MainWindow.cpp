@@ -64,6 +64,10 @@ public:
             varButton, &QPushButton::clicked,
             this, [this]() {rebuild(); });
         varButton->setText(trUtf8(u8R"(重新构建)"));
+        {
+            connect(arg,&MainWindow::onSetStartDir,
+                    this,[this](const auto & arg){ text->setText(arg); });
+        }
     }
 
     inline void rebuild() {
@@ -86,6 +90,14 @@ void MainWindow::rebuild() {
     static_cast<CenterWidget *>(
         this->centralWidget())
         ->rebuild();
+}
+
+void MainWindow::setStartDir(const QString & arg){
+    if( thisStartDir == arg ){
+        return;
+    }
+    thisStartDir = arg;
+    onSetStartDir(arg);
 }
 
 MainWindow::MainWindow() {
