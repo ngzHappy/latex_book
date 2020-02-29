@@ -700,9 +700,9 @@ public:
                     varTableString += varHeadData;
                     {/* 续表... */
                         QString varTableMarginnote = qsl(R"(%there must use marginnote ...
-\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\mbox{续\tablename}\,}\footnotesize{\ref{)");
+\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\mbox{\tablename}\,}\footnotesize{\ref{)");
                         varTableMarginnote += varKeyLabel;
-                        varTableMarginnote += QStringLiteral(R"(}}}})");
+                        varTableMarginnote += QStringLiteral(R"(}}\footnotesize{\kaishu\mbox{$^\Uparrow$}}}})");
                         varTableString += varTableMarginnote;
                     }
                     varTableString += qsl(R"(
