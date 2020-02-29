@@ -94,7 +94,7 @@ namespace sstd_convert_source_file {
         {/*将 //@'^^^^^'@ 替换为 (*@\space*{\fill}@*)// */
             const QString r1 = QStringLiteral(R"===(//@'^^^^^'@)===");
             if (arg.indexOf(r1) > -1) {
-                const QString r2 = argLeft + QStringLiteral(R"===(\hspace*{\fill})===")
+                const QString r2 = argLeft + QStringLiteral(R"===(\zzDotfill{})===")
                     + argRight + QStringLiteral(R"==(//)==");
                 arg.replace(r1, r2);
             }

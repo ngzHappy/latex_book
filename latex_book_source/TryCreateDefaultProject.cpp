@@ -261,6 +261,8 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \newcommand{\addfunctionindex}[1]{\refstepcounter{functionindex}\label{#1}\thefunctionindex\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\functionindexnameone\,}\footnotesize{\thefunctionindex}}}}
 \newcommand{\refTheBookFunction}[1]{\theBookLeftRightRefWrap{\functionindexnameone\theBookRawRef{#1}}}
 
+\def\zzDotfill{\color{brown}\leavevmode\xleaders\hbox to 0.85em{\hfil.\hfil}\hfill\kern0pt}
+
 \begin{document}
 
 %设置标点挤压模式
