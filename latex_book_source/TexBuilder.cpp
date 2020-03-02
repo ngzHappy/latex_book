@@ -571,7 +571,7 @@ public:
             if (isOk == false) {
                 return false;
             }
-            auto varArgs = argc_to_string(varArgs1);
+            auto varArgs = argc_to_string<true>(varArgs1)/*将args...转换为文本*/;
             /*将args转换为string*/
             *v = std::make_shared<RawString>(varArgs[0], v, state);
             /*删除整个函数*/
@@ -621,7 +621,7 @@ public:
             }
 
             auto varArgsKey =
-                argc_to_string(varArgsFull1);
+                argc_to_string<false>(varArgsFull1)/*获得lable*/;
 
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -785,7 +785,7 @@ public:
             if (isOk == false) {
                 return false;
             }
-            auto varArgs = argc_to_string(varArgs1);
+            auto varArgs = argc_to_string<false>(varArgs1)/*转换为label*/;
             /*将args转换为string*/
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -853,7 +853,7 @@ public:
                 return false;
             }
             auto varArgsKey =
-                argc_to_string(varArgsKeyPart);
+                argc_to_string<false>(varArgsKeyPart);
 
             /*将args转换为string*/
             {
@@ -953,7 +953,7 @@ title=\filesourcenumbernameone\ \ref{%1}
                 return false;
             }
             auto varArgsKey =
-                argc_to_string(varArgsKeyPart);
+                argc_to_string<false>(varArgsKeyPart);
 
             /*将args转换为string*/
             {
@@ -1053,7 +1053,7 @@ title=\treeindexnumbernameone\ \ref{%1}
                 return false;
             }
             auto varArgsKey =
-                argc_to_string(varArgsKeyPart);
+                argc_to_string<false>(varArgsKeyPart);
 
             /*将args转换为string*/
             {
@@ -1166,7 +1166,7 @@ title=\commandnumbernameone\ \ref{%1}
             }
 
             auto varArgsKey =
-                argc_to_string(varArgsKeyPart);
+                argc_to_string < false > (varArgsKeyPart);
 
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -1332,7 +1332,7 @@ title=\commandnumbernameone\ \ref{%1}
                 return false;
             }
             auto varArgsKey =
-                argc_to_string(varArgsKeyPart);
+                argc_to_string<false>(varArgsKeyPart);
 
             /*将args转换为string*/
             {
@@ -1446,7 +1446,7 @@ title=\commandnumbernameone\ \ref{%1}
             if (isOk == false) {
                 return false;
             }
-            auto varArgs = argc_to_string(varArgs1);
+            auto varArgs = argc_to_string<false>(varArgs1);
             /*将args转换为string*/
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -1507,7 +1507,7 @@ title=\commandnumbernameone\ \ref{%1}
             if (isOk == false) {
                 return false;
             }
-            auto varArgs = argc_to_string(varArgs1);
+            auto varArgs = argc_to_string<false>(varArgs1);
             /*将args转换为string*/
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -1568,7 +1568,7 @@ title=\commandnumbernameone\ \ref{%1}
             if (isOk == false) {
                 return false;
             }
-            auto varArgs = argc_to_string(varArgs1);
+            auto varArgs = argc_to_string<false>(varArgs1);
             /*将args转换为string*/
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -1713,7 +1713,7 @@ title=\commandnumbernameone\ \ref{%1}
             if (isOk == false) {
                 return false;
             }
-            auto varArgs = argc_to_string(varArgs1);
+            auto varArgs = argc_to_string<false>(varArgs1);
             /*将args转换为string*/
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -1773,7 +1773,7 @@ title=\commandnumbernameone\ \ref{%1}
             if (isOk == false) {
                 return false;
             }
-            auto varArgs = argc_to_string(varArgs1);
+            auto varArgs = argc_to_string<false>(varArgs1);
             /*将args转换为string*/
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -1833,7 +1833,7 @@ title=\commandnumbernameone\ \ref{%1}
             if (isOk == false) {
                 return false;
             }
-            auto varArgs = argc_to_string(varArgs1);
+            auto varArgs = argc_to_string<false>(varArgs1);
             /*将args转换为string*/
             {
                 const GetTheBookConstexpr varConstexpr;
