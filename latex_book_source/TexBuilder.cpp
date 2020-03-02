@@ -608,6 +608,7 @@ public:
 
         bool toRawString(item_list_pos * arg) override {
             QString varTableFullPath;
+
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1626,7 +1627,7 @@ title=\commandnumbernameone\ \ref{%1}
             if (isOk == false) {
                 return false;
             }
-            auto varArgs = argc_to_string(varArgs1);
+            auto varArgs = argc_to_string<false>(varArgs1);
             /*将args转换为string*/
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -2579,6 +2580,7 @@ title=\commandnumbernameone\ \ref{%1}
 
     }
 
+    template<bool CanConvert = true>
     static inline std::vector<QString> argc_to_string(
         const std::vector<
         std::pair< Item::item_list_pos,
@@ -2591,12 +2593,17 @@ title=\commandnumbernameone\ \ref{%1}
             auto & varAnsI = varAns[i];
             auto varPos = varItem.first;
             for (; varPos != varItem.second; ++varPos) {
-                if (varPos->get()->getType() == Item::Type::TypeRawString) {
+                auto varType = varPos->get()->getType();
+                if (varType == Item::Type::TypeRawString) {
                     varAnsI +=
                         static_cast<RawString *>(varPos->get())->data;
-                } else if (varPos->get()->getType() == Item::Type::TypeProgramString) {
-                    varAnsI += plainStringToTexString(
-                        static_cast<ProgramString *>(varPos->get())->data);
+                } else if (varType == Item::Type::TypeProgramString) {
+                    if constexpr (CanConvert) {
+                        varAnsI += plainStringToTexString(
+                            static_cast<ProgramString*>(varPos->get())->data);
+                    } else {
+                        varAnsI += static_cast<ProgramString*>(varPos->get())->data;
+                    }
                 }
             }
         }
