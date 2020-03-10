@@ -256,10 +256,13 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \usepackage{makecell}
 %设置函数计数器
 \newcommand\functionindexnameone{函数}
+\newcommand\classfunctionindexnameone{类}
 \newcounter{functionindex}
 \renewcommand\thefunctionindex{\arabic{functionindex}}
 \newcommand{\addfunctionindex}[1]{\refstepcounter{functionindex}\label{#1}\thefunctionindex\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\functionindexnameone\,}\footnotesize{\thefunctionindex}}}}
+\newcommand{\classaddfunctionindex}[1]{\refstepcounter{functionindex}\label{#1}\thefunctionindex\marginnote{\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\classfunctionindexnameone\,}\footnotesize{\thefunctionindex}}}}
 \newcommand{\refTheBookFunction}[1]{\theBookLeftRightRefWrap{\functionindexnameone\theBookRawRef{#1}}}
+\newcommand{\refTheBookClassFunction}[1]{\theBookLeftRightRefWrap{\classfunctionindexnameone\theBookRawRef{#1}}}
 
 \def\zzDotfill{\color{brown}\leavevmode\xleaders\hbox to 0.85em{\hfil.\hfil}\hfill\kern0pt}
 
@@ -305,7 +308,7 @@ identifierstyle=\scriptsize\itshape\sourcefontone        , %设置字号，字�
 \begin{multicols}{3}
 \section{公式索引}
 \input{EQIndex.tex}                           %公式索引目录
-\section{函数索引}
+\section{类及函数索引}
 \input{functionIndex.tex}                     %函数索引目录
 \section{图片索引}
 \input{figureIndex.tex}                       %图片索引目录

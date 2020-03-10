@@ -15,16 +15,16 @@
 #include <string>
 #include <functional>
 
-namespace sstd_convert_source_file{
-extern QString convertSourceString(const QString & arg,
-                            const QString & argLeft,
-                            const QString & argRight);
+namespace sstd_convert_source_file {
+    extern QString convertSourceString(const QString& arg,
+        const QString& argLeft,
+        const QString& argRight);
 }/* namespace sstd_convert_source_file */
 
-extern bool updateKeywords(const QString & argFullPath);
+extern bool updateKeywords(const QString& argFullPath);
 
-inline static QString \uacaf_before_section(const QString & arg1) {
-    
+inline static QString \uacaf_before_section(const QString& arg1) {
+
     if (arg1 == qsl("chapter")) {
         return qsl(R"(\titleformat{\chapter}[display]
  {\normalfont\sffamily\bfseries\Huge}
@@ -44,7 +44,7 @@ inline static QString \uacaf_before_section(const QString & arg1) {
     return {};
 }
 
-inline static QString \uacaf_after_section(const QString & arg1) {
+inline static QString \uacaf_after_section(const QString& arg1) {
     if (arg1 == qsl("chapter")) {
         return qsl(R"___(
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -102,11 +102,11 @@ _keys_set()
 _insertKey()
 *****/
 
-inline static bool buildFunctionString(QFile * argFile, const QString & argPath);
-inline static QString getFunctionTypeFromLabel(const QString & arg);
+inline static bool buildFunctionString(QFile* argFile, const QString& argPath);
+inline static QString getFunctionTypeFromLabel(const QString& arg);
 
 /*find max * between ( @ or @ )*/
-static inline int getMaxStartCount(const QString & arg, const QString & argTheFileName) {
+static inline int getMaxStartCount(const QString& arg, const QString& argTheFileName) {
 
     do {
         const auto varThisFileName = argTheFileName.trimmed() + QStringLiteral(".nlatex");
@@ -155,7 +155,7 @@ static inline int getMaxStartCount(const QString & arg, const QString & argTheFi
 
 }
 
-QString getMarginpar(const QString & argName, const QString & argThe) {
+QString getMarginpar(const QString& argName, const QString& argThe) {
     const auto varPar1 =
         qsl(R"(\setlength\fboxsep{2pt}\fbox{\footnotesize{\kaishu\parbox{1em}{\setlength{\baselineskip}{2pt}%1}}\footnotesize{%2}})");
     const auto varPar2 = varPar1.arg(argName);
@@ -165,82 +165,82 @@ QString getMarginpar(const QString & argName, const QString & argThe) {
     return varAns;
 }
 
-static inline const QString & texRaw() {
+static inline const QString& texRaw() {
     const static auto varAns = qsl(":tex_raw:");
     return varAns;
 }
 
-static inline const QString & theBookFunctionIndex() {
+static inline const QString& theBookFunctionIndex() {
     const static auto varAns = qsl(":the_book_function_index:");
     return varAns;
 }
 
-static inline const QString & theBookParagraph() {
+static inline const QString& theBookParagraph() {
     const static auto varAns = qsl(":the_book_paragraph:");
     return varAns;
 }
 
-static inline const QString & theBookSubParagraph() {
+static inline const QString& theBookSubParagraph() {
     const static auto varAns = qsl(":the_book_subparagraph:");
     return varAns;
 }
 
-static inline const QString & theBookChapter() {
+static inline const QString& theBookChapter() {
     const static auto varAns = qsl(":the_book_chapter:");
     return varAns;
 }
 
-static inline const QString & theBookSection() {
+static inline const QString& theBookSection() {
     const static auto varAns = qsl(":the_book_section:");
     return varAns;
 }
 
-static inline const QString & theBookSubSection() {
+static inline const QString& theBookSubSection() {
     const static auto varAns = qsl(":the_book_subsection:");
     return varAns;
 }
 
-static inline const QString & theBookSubSubSection() {
+static inline const QString& theBookSubSubSection() {
     const static auto varAns = qsl(":the_book_subsubsection:");
     return varAns;
 }
 
-static inline const QString & theBookText() {
+static inline const QString& theBookText() {
     const static auto varAns = qsl(":the_book_text:");
     return varAns;
 }
 
-static inline const QString & theBookForeword() {
+static inline const QString& theBookForeword() {
     const static auto varAns = qsl(":the_book_foreword:");
     return varAns;
 }
 
-static inline const QString & theBookImage() {
+static inline const QString& theBookImage() {
     const static auto varAns = qsl(":the_book_image:");
     return varAns;
 }
 
-static inline const QString & theBookReadFileSouce() {
+static inline const QString& theBookReadFileSouce() {
     const static auto varAns = qsl(":the_book_file:");
     return varAns;
 }
 
-static inline const QString & theBookReadTreeFileSouce() {
+static inline const QString& theBookReadTreeFileSouce() {
     const static auto varAns = qsl(":the_book_tree_file:");
     return varAns;
 }
 
-static inline const QString & theBookReadCommandFileSouce() {
+static inline const QString& theBookReadCommandFileSouce() {
     const static auto varAns = qsl(":the_book_command_file:");
     return varAns;
 }
 
-static inline const QString & theBookTable() {
+static inline const QString& theBookTable() {
     const static auto varAns = qsl(":the_book_table:");
     return varAns;
 }
 
-static inline const QString & theBookEqual() {
+static inline const QString& theBookEqual() {
     const static auto varAns = qsl(":the_book_eq:");
     return varAns;
 }
@@ -252,13 +252,13 @@ namespace _the_private {
         std::regex regex;
         std::string data;
         ReplaceItem() = default;
-        ReplaceItem(std::regex && a, std::string &&b) :
+        ReplaceItem(std::regex&& a, std::string&& b) :
             regex(std::move(a)),
             data(std::move(b)) {
         }
     };
 
-    inline const std::vector< ReplaceItem > & getDefaultReplace() {
+    inline const std::vector< ReplaceItem >& getDefaultReplace() {
         /* regex : ^ $ \ . * + ? ( ) [ ] { } | */
         const static std::vector< ReplaceItem > varReplaceDutys = []() ->auto {
             constexpr const auto varRegexOption =
@@ -295,7 +295,7 @@ namespace _the_private {
             ans.emplace_back(std::regex(u8R"(♂)", varRegexOption), std::string(u8R"(\female{})"sv));
             ans.emplace_back(std::regex(u8R"(★)", varRegexOption), std::string(u8R"(\ding{72})"sv));
             ans.emplace_back(std::regex(u8R"(☆)", varRegexOption), std::string(u8R"(\ding{73})"sv));
-           
+
             return std::move(ans);
         }();
 
@@ -303,7 +303,7 @@ namespace _the_private {
     }
 
     /*将替换latex特殊字符*/
-    inline static std::string _replace_all(const std::string_view arg, const std::vector< ReplaceItem > & varReplaceDutys) {
+    inline static std::string _replace_all(const std::string_view arg, const std::vector< ReplaceItem >& varReplaceDutys) {
 
         std::string ans;
 
@@ -322,7 +322,7 @@ namespace _the_private {
 
         tmpReplaces.emplace_back(arg, false);
 
-        for (const auto & R : varReplaceDutys) {/*对于每一个正则表达式*/
+        for (const auto& R : varReplaceDutys) {/*对于每一个正则表达式*/
 
             /*如果输入里面没有匹配此正则表达式则跳过*/
             if (false == std::regex_search(arg.data(), arg.data() + arg.size(), R.regex)) {
@@ -331,7 +331,7 @@ namespace _the_private {
 
             tmpReplacesInput = std::move(tmpReplaces);
 
-            for (const auto & varD : tmpReplacesInput) {
+            for (const auto& varD : tmpReplacesInput) {
 
                 if (varD.is_replace) { /*copy the replaced data to ans*/
                     tmpReplaces.push_back(varD);
@@ -373,13 +373,13 @@ namespace _the_private {
         {
             /*先计算返回元素大小...*/
             std::size_t varFinalSize = 4;
-            for (const auto & varI : tmpReplaces) {
+            for (const auto& varI : tmpReplaces) {
                 varFinalSize += varI.data.size();
             }
             ans.reserve(varFinalSize);
         }
 
-        for (const auto & varI : tmpReplaces) {
+        for (const auto& varI : tmpReplaces) {
             if (varI.data.empty()) {
                 continue;
             }
@@ -392,8 +392,8 @@ namespace _the_private {
 }/*namespace _the_private*/
 
 /*将文本转换为符合tex语法的文本*/
-static inline QString plainStringToTexString(const QString & arg,
-    const std::vector< _the_private::ReplaceItem > & varReplaceDutys = _the_private::getDefaultReplace()) {
+static inline QString plainStringToTexString(const QString& arg,
+    const std::vector< _the_private::ReplaceItem >& varReplaceDutys = _the_private::getDefaultReplace()) {
     if (arg.isEmpty()) {
         return{};
     }
@@ -411,9 +411,9 @@ static inline QString plainStringToTexString(const QString & arg,
 
 class TexBuilderPrivate {
 public:
-    TexBuilder * const super;
-    GlobalTexBuilder * const globalSuper;
-    GlobalTexBuilder * parentGlobalSuper{ nullptr };
+    TexBuilder* const super;
+    GlobalTexBuilder* const globalSuper;
+    GlobalTexBuilder* parentGlobalSuper{ nullptr };
     QString inputFileName;
     QString outputFileName;
 
@@ -489,7 +489,7 @@ public:
 
         virtual ~Item() = default;
         virtual Type getType() const = 0;
-        virtual bool toRawString(item_list_pos * next) = 0;
+        virtual bool toRawString(item_list_pos* next) = 0;
         virtual bool isKeyFunction() const {
             return false;
         }
@@ -516,7 +516,7 @@ public:
         virtual Type getType() const override {
             return Type::TypeFunctionOp;
         }
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             *arg = this->pos;
             ++(*arg);
             return true;
@@ -561,7 +561,7 @@ public:
             return Type::TypeTextString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -606,7 +606,7 @@ public:
             return true;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             QString varTableFullPath;
 
             /*将ans插入表*/
@@ -637,7 +637,7 @@ public:
                 }
 
                 {/*...index*/
-                    auto & varIndexStream = state
+                    auto& varIndexStream = state
                         ->texBuilderPrivate
                         ->globalSuper
                         ->getTableIndex();
@@ -650,8 +650,8 @@ public:
                     varIndexStream << endl << endl;
                 }
 
-                const auto & varCaptionRaw = varArgs2[0];
-                const auto & varDirRaw = varArgs2[1];
+                const auto& varCaptionRaw = varArgs2[0];
+                const auto& varDirRaw = varArgs2[1];
 
                 const auto varDirPath =
                     getOutPutFileFullPath(varDirRaw);
@@ -774,7 +774,7 @@ public:
             return Type::TypeForwordString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -840,7 +840,7 @@ public:
             :FunctionOp(deepthx, p, std::move(s)) {
         }
 
-        inline bool toRawString(item_list_pos * arg) override {
+        inline bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -875,7 +875,7 @@ public:
                 {
                     const auto varThisFileName = getOutPutFileFullPath(varArgs2[0]);
                     const auto varSources = readFileSource(varThisFileName);
-                    for (const auto & varLine : varSources) {
+                    for (const auto& varLine : varSources) {
                         varFullFile += varLine;
                         varFullFile += QChar('\n');
                     }
@@ -889,7 +889,7 @@ public:
                 }
 
                 {/*index ...*/
-                    auto & varIndexStream = state
+                    auto& varIndexStream = state
                         ->texBuilderPrivate
                         ->globalSuper
                         ->getSourceIndex();
@@ -913,7 +913,7 @@ title=\filesourcenumbernameone\ \ref{%1}
                 varString += varLeftKey;
                 varString += qsl(R"(\refstepcounter{filesourcenumber}\label{%1})").arg(varKeyLabel);
                 varString += varRightKey;
-                varString += sstd_convert_source_file::convertSourceString(varFullFile,varLeftKey,varRightKey);
+                varString += sstd_convert_source_file::convertSourceString(varFullFile, varLeftKey, varRightKey);
                 varString += varLeftKey;
                 varString += getMarginpar(qsl(R"(\filesourcenumbernameone)"), qsl(R"(\thefilesourcenumber)"));
                 varString += varRightKey;
@@ -940,7 +940,7 @@ title=\filesourcenumbernameone\ \ref{%1}
         public KeyFileSouceString {
     public:
         using KeyFileSouceString::KeyFileSouceString;
-        inline bool toRawString(item_list_pos * arg) override {
+        inline bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -975,7 +975,7 @@ title=\filesourcenumbernameone\ \ref{%1}
                 {
                     const auto varThisFileName = getOutPutFileFullPath(varArgs2[0]);
                     const auto varSources = readFileSource(varThisFileName);
-                    for (const auto & varLine : varSources) {
+                    for (const auto& varLine : varSources) {
                         varFullFile += varLine;
                         varFullFile += QChar('\n');
                     }
@@ -989,7 +989,7 @@ title=\filesourcenumbernameone\ \ref{%1}
                 }
 
                 {
-                    auto & varIndexStream = state
+                    auto& varIndexStream = state
                         ->texBuilderPrivate
                         ->globalSuper
                         ->getDirTreeSourceIndex();
@@ -1014,7 +1014,7 @@ title=\treeindexnumbernameone\ \ref{%1}
                 varString += varLeftKey;
                 varString += qsl(R"(\refstepcounter{treeindexnumber}\label{%1})").arg(varKeyLabel);
                 varString += varRightKey;
-                varString += sstd_convert_source_file::convertSourceString(varFullFile,varLeftKey,varRightKey);
+                varString += sstd_convert_source_file::convertSourceString(varFullFile, varLeftKey, varRightKey);
                 varString += varLeftKey;
                 varString += getMarginpar(qsl(R"(\treeindexnumbernameone)"), qsl(R"(\thetreeindexnumber)"));
                 varString += varRightKey;
@@ -1040,7 +1040,7 @@ title=\treeindexnumbernameone\ \ref{%1}
         public KeyFileSouceString {
     public:
         using KeyFileSouceString::KeyFileSouceString;
-        inline bool toRawString(item_list_pos * arg) override {
+        inline bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1075,7 +1075,7 @@ title=\treeindexnumbernameone\ \ref{%1}
                 {
                     const auto varThisFileName = getOutPutFileFullPath(varArgs2[0]);
                     const auto varSources = readFileSource(varThisFileName);
-                    for (const auto & varLine : varSources) {
+                    for (const auto& varLine : varSources) {
                         varFullFile += varLine;
                         varFullFile += QChar('\n');
                     }
@@ -1089,7 +1089,7 @@ title=\treeindexnumbernameone\ \ref{%1}
                 }
 
                 {
-                    auto & varIndexStream = state
+                    auto& varIndexStream = state
                         ->texBuilderPrivate
                         ->globalSuper
                         ->getCommandSourceIndex();
@@ -1113,7 +1113,7 @@ title=\commandnumbernameone\ \ref{%1}
                 varString += varLeftKey;
                 varString += qsl(R"(\refstepcounter{commandnumber}\label{%1})").arg(varKeyLabel);
                 varString += varRightKey;
-                varString += sstd_convert_source_file::convertSourceString(varFullFile,varLeftKey,varRightKey);
+                varString += sstd_convert_source_file::convertSourceString(varFullFile, varLeftKey, varRightKey);
                 varString += varLeftKey;
                 varString += getMarginpar(qsl(R"(\commandnumbernameone)"), qsl(R"(\thecommandnumber)"));
                 varString += varRightKey;
@@ -1151,7 +1151,7 @@ title=\commandnumbernameone\ \ref{%1}
             return true;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
 
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
@@ -1166,7 +1166,7 @@ title=\commandnumbernameone\ \ref{%1}
             }
 
             auto varArgsKey =
-                argc_to_string < false > (varArgsKeyPart);
+                argc_to_string < false >(varArgsKeyPart);
 
             {
                 const GetTheBookConstexpr varConstexpr;
@@ -1218,7 +1218,7 @@ title=\commandnumbernameone\ \ref{%1}
                 }
 
                 {
-                    auto & varIndexStream = state
+                    auto& varIndexStream = state
                         ->texBuilderPrivate
                         ->globalSuper
                         ->getEQIndex();
@@ -1319,7 +1319,7 @@ title=\commandnumbernameone\ \ref{%1}
             return true;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto varAnsPos = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1365,7 +1365,7 @@ title=\commandnumbernameone\ \ref{%1}
                 }
 
                 {
-                    auto & varIndexStream = state
+                    auto& varIndexStream = state
                         ->texBuilderPrivate
                         ->globalSuper
                         ->getFigureIndex();
@@ -1435,7 +1435,7 @@ title=\commandnumbernameone\ \ref{%1}
             return Type::TypeSubParagraphString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1496,7 +1496,7 @@ title=\commandnumbernameone\ \ref{%1}
             return Type::TypeParagraphString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1557,7 +1557,7 @@ title=\commandnumbernameone\ \ref{%1}
             return Type::TypeChapterString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1616,7 +1616,7 @@ title=\commandnumbernameone\ \ref{%1}
             return Type::TypeFunctionLabelString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1652,15 +1652,21 @@ title=\commandnumbernameone\ \ref{%1}
                 }
                 /*****************************************************/
 
+                const bool varIsClassType = varKeyLabel.startsWith(QStringLiteral("Theclass"));
+
                 {
-                    auto & varIndexStream = state->texBuilderPrivate->globalSuper ? state
+                    auto& varIndexStream = state->texBuilderPrivate->globalSuper ? state
                         ->texBuilderPrivate
                         ->globalSuper
                         ->getFunctionIndex() : state
                         ->texBuilderPrivate
                         ->parentGlobalSuper
                         ->getFunctionIndex();
-                    varIndexStream << qsl(R"++++(\noindent\functionindexnameone\ \ref{)++++");
+                    if (varIsClassType) {/*如果是类的话...*/
+                        varIndexStream << qsl(R"++++(\noindent\classfunctionindexnameone\ \ref{)++++");
+                    } else {
+                        varIndexStream << qsl(R"++++(\noindent\functionindexnameone\ \ref{)++++");
+                    }
                     varIndexStream << varKeyLabel;
                     varIndexStream << qsl(R"++++(}\dotfill\pageref{)++++");
                     varIndexStream << varKeyLabel;
@@ -1669,7 +1675,11 @@ title=\commandnumbernameone\ \ref{%1}
                     varIndexStream << endl << endl;
                 }
 
-                varString = qsl(R"(\addfunctionindex{%1})").arg(varKeyLabel);
+                if (varIsClassType) {
+                    varString = qsl(R"(\classaddfunctionindex{%1})").arg(varKeyLabel);
+                } else {
+                    varString = qsl(R"(\addfunctionindex{%1})").arg(varKeyLabel);
+                }
 
                 *v = std::make_shared<RawString>(varString, v, state);
             }
@@ -1702,7 +1712,7 @@ title=\commandnumbernameone\ \ref{%1}
             return Type::TypeSectionString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1762,7 +1772,7 @@ title=\commandnumbernameone\ \ref{%1}
             return Type::TypeSubSectionString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1822,7 +1832,7 @@ title=\commandnumbernameone\ \ref{%1}
             return Type::TypeSubSubSectionString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             /*将ans插入表*/
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
@@ -1874,7 +1884,7 @@ title=\commandnumbernameone\ \ref{%1}
         virtual Type getType() const override {
             return Type::TypeRawString;
         }
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             *arg = this->pos;
             ++(*arg);
             return true;
@@ -1898,7 +1908,7 @@ title=\commandnumbernameone\ \ref{%1}
             return Type::TypeProgramString;
         }
 
-        bool toRawString(item_list_pos * arg) override {
+        bool toRawString(item_list_pos* arg) override {
             auto v = state->data.emplace(this->pos);
             state->line_number = (*pos)->line_number;
 
@@ -1913,8 +1923,8 @@ title=\commandnumbernameone\ \ref{%1}
 
     class ParseStateSuper {
     public:
-        TexBuilderPrivate * texBuilderPrivate;
-        ParseStateSuper(TexBuilderPrivate * arg) :texBuilderPrivate(arg) {
+        TexBuilderPrivate* texBuilderPrivate;
+        ParseStateSuper(TexBuilderPrivate* arg) :texBuilderPrivate(arg) {
         }
     };
     class ParseState :
@@ -1923,7 +1933,7 @@ title=\commandnumbernameone\ \ref{%1}
         Item::item_list data;
         int line_number{ 0 };
         int current_deepth{ -1 };
-        ParseState(TexBuilderPrivate * v) :
+        ParseState(TexBuilderPrivate* v) :
             ParseStateSuper(v) {
         }
     };
@@ -1948,7 +1958,7 @@ title=\commandnumbernameone\ \ref{%1}
         }
 
         if (currentParseState) {
-            for (auto & varI : currentParseState->data) {
+            for (auto& varI : currentParseState->data) {
                 if (varI) {
                     varI->clear();
                 }
@@ -1963,17 +1973,17 @@ title=\commandnumbernameone\ \ref{%1}
     public:
         QString name;
         int argc{ 1 };
-        friend inline bool operator<(const FunctionKeys &l, const FunctionKeys & r) {
+        friend inline bool operator<(const FunctionKeys& l, const FunctionKeys& r) {
             return l.name < r.name;
         }
-        inline FunctionKeys(const QString & a, int b) :
+        inline FunctionKeys(const QString& a, int b) :
             name(a),
             argc(b) {
         }
-        FunctionKeys(const FunctionKeys &) = default;
-        FunctionKeys(FunctionKeys &&) = default;
-        FunctionKeys&operator=(const FunctionKeys &) = default;
-        FunctionKeys&operator=(FunctionKeys &&) = default;
+        FunctionKeys(const FunctionKeys&) = default;
+        FunctionKeys(FunctionKeys&&) = default;
+        FunctionKeys& operator=(const FunctionKeys&) = default;
+        FunctionKeys& operator=(FunctionKeys&&) = default;
     };
 
     static inline std::shared_ptr< std::set<FunctionKeys> > _keys_set() {
@@ -2004,7 +2014,7 @@ title=\commandnumbernameone\ \ref{%1}
     /*构建表(处理宏)*/
     inline bool parse_tex_raw(std::shared_ptr<ParseState> varState) {
 
-        auto & varStream = *inputStream;
+        auto& varStream = *inputStream;
         QString varLine;
         std::optional<const QString> varOp;
         while (false == varStream.atEnd()) {
@@ -2165,7 +2175,7 @@ title=\commandnumbernameone\ \ref{%1}
     /*标记[[,]]*/
     inline int _parse_op(std::shared_ptr<ParseState> varState) {
 
-        auto & varData = varState->data;
+        auto& varData = varState->data;
         auto varPos = varData.cbegin();
         int varMaxDeepth = 0;
 
@@ -2180,7 +2190,7 @@ title=\commandnumbernameone\ \ref{%1}
 
                 auto varItemRaw = *varPos;
                 auto varProgram =
-                    static_cast<ProgramString *>(varItemRaw.get());
+                    static_cast<ProgramString*>(varItemRaw.get());
 
                 auto varString = varProgram->data;
                 the_book_assert(false == varString.isEmpty(), u8R"(字符串为空！)"sv);
@@ -2323,11 +2333,11 @@ title=\commandnumbernameone\ \ref{%1}
     }
 
     inline Item::item_list_pos _insertKey(
-        const FunctionKeys  & varKey,
+        const FunctionKeys& varKey,
         int varDeepth,
         Item::item_list_pos   varPos) {
         /*整个表*/
-        auto & varData = currentParseState->data;
+        auto& varData = currentParseState->data;
 
         auto varAns = varData.emplace(varPos);
         currentParseState->line_number = (*varPos)->line_number;
@@ -2335,15 +2345,15 @@ title=\commandnumbernameone\ \ref{%1}
         using CurrentParseState = std::remove_reference_t< decltype(currentParseState) >;
         using VarAns = std::remove_reference_t<  decltype(varAns) >;
         using VarDeepth = int;
-        typedef void(*FunctionType)(CurrentParseState &, VarAns &, const VarDeepth &);
+        typedef void(*FunctionType)(CurrentParseState&, VarAns&, const VarDeepth&);
         using FunctionMap = std::map< QString, FunctionType >;
 
         static const FunctionMap globalFunctionMap = []() {
             FunctionMap varFunctionMap;
 
-            varFunctionMap[theBookReadCommandFileSouce()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookReadCommandFileSouce()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyCommandFileSouceString >(varDeepth,
                         varAns,
@@ -2351,9 +2361,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookParagraph()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookParagraph()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyParagraphString >(varDeepth,
                         varAns,
@@ -2361,9 +2371,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookSubParagraph()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookSubParagraph()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeySubParagraphString >(varDeepth,
                         varAns,
@@ -2371,9 +2381,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookChapter()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookChapter()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyChapterString >(varDeepth,
                         varAns,
@@ -2381,9 +2391,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookFunctionIndex()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookFunctionIndex()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyFunctionLabelString >(varDeepth,
                         varAns,
@@ -2391,9 +2401,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookForeword()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookForeword()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyForewordString >(varDeepth,
                         varAns,
@@ -2401,9 +2411,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookSection()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookSection()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeySectionString >(varDeepth,
                         varAns,
@@ -2411,9 +2421,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookSubSection()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookSubSection()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeySubSectionString >(varDeepth,
                         varAns,
@@ -2421,9 +2431,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookSubSubSection()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookSubSubSection()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeySubSubSectionString >(varDeepth,
                         varAns,
@@ -2431,9 +2441,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookImage()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookImage()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyImageString >(varDeepth,
                         varAns,
@@ -2441,9 +2451,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookReadFileSouce()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookReadFileSouce()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyFileSouceString >(varDeepth,
                         varAns,
@@ -2451,9 +2461,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookTable()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookTable()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyTableString >(varDeepth,
                         varAns,
@@ -2461,9 +2471,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookReadTreeFileSouce()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookReadTreeFileSouce()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyTreeFileSouceString >(varDeepth,
                         varAns,
@@ -2471,9 +2481,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookEqual()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookEqual()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyEqualsString >(varDeepth,
                         varAns,
@@ -2481,9 +2491,9 @@ title=\commandnumbernameone\ \ref{%1}
                 *varAns = varValue;
             };
 
-            varFunctionMap[theBookText()] = [](CurrentParseState & currentParseState,
-                VarAns & varAns,
-                const VarDeepth & varDeepth) {
+            varFunctionMap[theBookText()] = [](CurrentParseState& currentParseState,
+                VarAns& varAns,
+                const VarDeepth& varDeepth) {
                 auto varValue =
                     std::make_shared< KeyTextSring >(varDeepth,
                         varAns,
@@ -2510,7 +2520,7 @@ title=\commandnumbernameone\ \ref{%1}
 
     inline int get_function_deepth(Item::item_list_pos arg) {
         /*整个表*/
-        auto & varData = currentParseState->data;
+        auto& varData = currentParseState->data;
         auto varEnd = std::make_reverse_iterator(varData.cbegin());
         auto varBegin = std::make_reverse_iterator(arg);
         int varLeftCount = 0;
@@ -2531,7 +2541,7 @@ title=\commandnumbernameone\ \ref{%1}
         getCallArgs(
             Item::item_list_pos argPos,
             int  argc,
-            bool * ans,
+            bool* ans,
             std::shared_ptr<ParseState> currentParseState) {
 
         if (argc < 1) {
@@ -2539,7 +2549,7 @@ title=\commandnumbernameone\ \ref{%1}
             return{};
         }
 
-        const auto & varData =
+        const auto& varData =
             currentParseState->data;
 
         auto varEnd = varData.cend();
@@ -2584,19 +2594,19 @@ title=\commandnumbernameone\ \ref{%1}
     static inline std::vector<QString> argc_to_string(
         const std::vector<
         std::pair< Item::item_list_pos,
-        Item::item_list_pos > > & args) {
+        Item::item_list_pos > >& args) {
         std::vector<QString> varAns;
         varAns.resize(args.size());
         std::size_t i = 0;
         for (; i < args.size(); ++i) {
             auto varItem = args[i];
-            auto & varAnsI = varAns[i];
+            auto& varAnsI = varAns[i];
             auto varPos = varItem.first;
             for (; varPos != varItem.second; ++varPos) {
                 auto varType = varPos->get()->getType();
                 if (varType == Item::Type::TypeRawString) {
                     varAnsI +=
-                        static_cast<RawString *>(varPos->get())->data;
+                        static_cast<RawString*>(varPos->get())->data;
                 } else if (varType == Item::Type::TypeProgramString) {
                     if constexpr (CanConvert) {
                         varAnsI += plainStringToTexString(
@@ -2627,7 +2637,7 @@ title=\commandnumbernameone\ \ref{%1}
         /*标记函数*/
 
         /*整个表*/
-        auto & varData = varState->data;
+        auto& varData = varState->data;
         /*当前位置*/
         auto varPos = varData.cbegin();
         /*遍历整个表*/
@@ -2644,7 +2654,7 @@ title=\commandnumbernameone\ \ref{%1}
 
             /*当前元素*/
             auto varProgram =
-                static_cast<ProgramString *>(varItemRaw.get());
+                static_cast<ProgramString*>(varItemRaw.get());
 
             /*搜索当前key的起始位置...*/
             int varIndex;
@@ -2657,7 +2667,7 @@ title=\commandnumbernameone\ \ref{%1}
                 /*本行keys计数器*/
                 int varKeyCount = 0;
                 /*搜索最左边的key*/
-                for (const auto & varI : *keys_set()) {
+                for (const auto& varI : *keys_set()) {
                     auto varThisKeyIndex =
                         varProgram->data.indexOf(varI.name);
                     if (varThisKeyIndex < 0) {
@@ -2748,7 +2758,7 @@ title=\commandnumbernameone\ \ref{%1}
             return true;
         }
         /*整个表*/
-        auto & varData = varState->data;
+        auto& varData = varState->data;
         auto varPos = varData.cbegin();
         auto varCurrentDeepth = varState->current_deepth;
         do {
@@ -2757,7 +2767,7 @@ title=\commandnumbernameone\ \ref{%1}
                 if (varPos->get()->isKeyFunction()) {
                     auto varItem = *varPos;
                     auto varCurrentDeepth1 =
-                        static_cast<FunctionOp *>(varItem.get())->deepth;
+                        static_cast<FunctionOp*>(varItem.get())->deepth;
                     the_book_assert((varCurrentDeepth >= varCurrentDeepth1), u8R"(逻辑错误！)"sv, varState->line_number);
                     if (varCurrentDeepth == varCurrentDeepth1) {
                         if (false == varItem->toRawString(&varPos)) {
@@ -2820,26 +2830,26 @@ title=\commandnumbernameone\ \ref{%1}
     }
 
     inline void write_output() {
-        auto & varStream = *outputStream;
-        for (const auto & varI : currentParseState->data) {
-            varStream << static_cast<const RawString *>(
+        auto& varStream = *outputStream;
+        for (const auto& varI : currentParseState->data) {
+            varStream << static_cast<const RawString*>(
                 varI.get())->data;
         }
     }
 
 public:
-    TexBuilderPrivate(TexBuilder * arg, GlobalTexBuilder *argG)
+    TexBuilderPrivate(TexBuilder* arg, GlobalTexBuilder* argG)
         :super(arg)
         , globalSuper(argG) {
     }
 };
 
-TexBuilder::TexBuilder(GlobalTexBuilder * arg) :
+TexBuilder::TexBuilder(GlobalTexBuilder* arg) :
     thisp(new TexBuilderPrivate(this, arg)) {
 
 }
 
-TexBuilder::TexBuilder(TexBuilder * p) : TexBuilder(static_cast<GlobalTexBuilder *>(nullptr)) {
+TexBuilder::TexBuilder(TexBuilder* p) : TexBuilder(static_cast<GlobalTexBuilder*>(nullptr)) {
     thisp->parentGlobalSuper = p->thisp->globalSuper;
 }
 
@@ -2847,7 +2857,7 @@ TexBuilder::~TexBuilder() {
     delete thisp;
 }
 
-void TexBuilder::setInputFileName(const QString & arg) {
+void TexBuilder::setInputFileName(const QString& arg) {
     thisp->inputFileName = arg;
 }
 
@@ -2855,7 +2865,7 @@ QString TexBuilder::getInputFileName() const {
     return thisp->inputFileName;
 }
 
-void TexBuilder::setOutputFileName(const QString & arg) {
+void TexBuilder::setOutputFileName(const QString& arg) {
     thisp->outputFileName = arg;
 }
 
@@ -2872,10 +2882,10 @@ bool TexBuilder::convert() {
 
     /*由于shared_ptr循环引用，所以手动删除数据*/
     class CleanLock {
-        TexBuilderPrivate * const data;
+        TexBuilderPrivate* const data;
     private:
     public:
-        inline CleanLock(TexBuilderPrivate * a) :data(a) {
+        inline CleanLock(TexBuilderPrivate* a) :data(a) {
             this->clean();
         }
         inline ~CleanLock() {
@@ -2908,11 +2918,11 @@ bool TexBuilder::convert() {
     return true;
 }
 
-extern QString theBookPlainTextToTexText(const QString & arg) {
+extern QString theBookPlainTextToTexText(const QString& arg) {
     return plainStringToTexString(arg);
 }
 
-inline static QString getFunctionTypeFromLabel(const QString & arg) {
+inline static QString getFunctionTypeFromLabel(const QString& arg) {
     if (arg.isEmpty()) {
         return qsl("C++");
     }
@@ -2940,7 +2950,7 @@ inline static QString getFunctionTypeFromLabel(const QString & arg) {
     return QString{ varAns.data() ,static_cast<int>(varAns.size()) };
 }
 
-inline static bool buildFunctionString(QFile * argFile, const QString & argPath) {
+inline static bool buildFunctionString(QFile* argFile, const QString& argPath) {
 
     /* https://github.com/nanguazhude/MyLearnLatex/blob/master/GuZhenRen1/cplusplus/main.cpp */
     const static std::vector< _the_private::ReplaceItem > varReplaceDutys = []()->auto {
@@ -2973,10 +2983,10 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
 
     class LineDetailString : public QString {
     public:
-        inline LineDetailString(const QString & arg, int n) : QString(arg),
+        inline LineDetailString(const QString& arg, int n) : QString(arg),
             leftSpace(n) {
         }
-        inline LineDetailString(QString && arg, int n) : QString(std::move(arg)),
+        inline LineDetailString(QString&& arg, int n) : QString(std::move(arg)),
             leftSpace(n) {
         }
         int leftSpace;
@@ -2997,7 +3007,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
         }
 
         int varN = 0;
-        for (const auto & varI : varLine) {
+        for (const auto& varI : varLine) {
             if (varI.isSpace()) {
                 ++varN;
                 continue;
@@ -3018,7 +3028,7 @@ inline static bool buildFunctionString(QFile * argFile, const QString & argPath)
     bool isFirstLine = true;
     bool justAfterTemplate = false;
 
-    for (const auto & varLine : varLines) {
+    for (const auto& varLine : varLines) {
         bool isTemplateLine = false;
         if (isFirstLine) {
             isTemplateLine = varLine.startsWith(qsl("template"));
