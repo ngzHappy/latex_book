@@ -25,10 +25,10 @@ namespace sstd_convert_source_file {
             }
         };
 
-        inline void convertSourceString(const QString & arg,
-            const QString & argLeft,
-            const QString & argRight,
-            std::vector< TypedString > * argAns) {
+        inline void convertSourceString(const QString& arg,
+            const QString& argLeft,
+            const QString& argRight,
+            std::vector< TypedString >* argAns) {
             int varLeft{ 0 };
             for (;;) {
                 auto varPos = arg.indexOf(argLeft, varLeft);
@@ -48,7 +48,7 @@ namespace sstd_convert_source_file {
 
         }
 
-        inline QString replaceQStringRef(const QStringRef & arg, const QString &l, const QString &r) {
+        inline QString replaceQStringRef(const QStringRef& arg, const QString& l, const QString& r) {
             QRegularExpression const static varRegex{ QStringLiteral(R"(-)") };
             QString varAns = arg.toString();
             varAns.replace(varRegex, l + QStringLiteral(R"(\hspace{0.05em}\rule[0.52ex]{0.5em}{0.48pt}\hspace{0.05em})") + r);
@@ -57,9 +57,9 @@ namespace sstd_convert_source_file {
 
     }/**/
 
-    QString __convertSourceString(const QString & arg,
-        const QString & argLeft,
-        const QString & argRight) {
+    QString __convertSourceString(const QString& arg,
+        const QString& argLeft,
+        const QString& argRight) {
 
         if (arg.isEmpty()) {
             return {};
@@ -70,7 +70,7 @@ namespace sstd_convert_source_file {
 
         {
             QString ans;
-            for (const auto & varI : data) {
+            for (const auto& varI : data) {
                 if (varI.type == sstd_private::StringType::None) {
                     ans += sstd_private::replaceQStringRef(QStringRef(&arg, varI.start, varI.length),
                         argLeft, argRight);
@@ -87,19 +87,21 @@ namespace sstd_convert_source_file {
 
     }
 
-    QString convertSourceString(const QString & arg_,
-        const QString & argLeft,
-        const QString & argRight) {
+    QString convertSourceString(const QString& arg_,
+        const QString& argLeft,
+        const QString& argRight) {
         QString arg = arg_;
         {/*将 //@'^^^^^'@ 替换为 (*@\space*{\fill}@*)// */
             const QString r1 = QStringLiteral(R"===(//@'^^^^^'@)===");
             if (arg.indexOf(r1) > -1) {
-                const QString r2 = argLeft + QStringLiteral(R"===(\ \zzDotfill{})===")
-                    + argRight + QStringLiteral(R"==(//)==");
+                const QString r2 = argLeft + QStringLiteral(R"===(\ \zzDotfill{})===") +
+                    QStringLiteral(R"==(\resizebox{1ex}{1ex}{//})==") + argRight;
                 arg.replace(r1, r2);
             }
         }
-        return __convertSourceString(arg,argLeft,argRight);
+        return __convertSourceString(arg, argLeft, argRight);
     }
 
 }/**/
+// 把他缩小到一行可以看的见的程度，就是不会超出去。
+// \resizebox{1\linewidth}{!}{}
