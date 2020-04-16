@@ -1,6 +1,7 @@
 ﻿#include <QtCore/QtCore>
 #include <vector>
 #include <list>
+#include <random>
 
 namespace sstd_convert_source_file {
 
@@ -87,15 +88,30 @@ namespace sstd_convert_source_file {
 
     }
 
+    class RandomPack {
+    public:
+        QString gen() {
+            return QString::number(mdis(mgen));
+        }
+        RandomPack() {
+            mdis = std::uniform_int_distribution<int>(12, 99);
+        }
+        std::mt19937 mgen{ std::default_random_engine{}() };
+        std::uniform_int_distribution<int> mdis;
+    };
+
     QString convertSourceString(const QString& arg_,
         const QString& argLeft,
         const QString& argRight) {
+        thread_local RandomPack varRandom;
         QString arg = arg_;
         {/*将 //@'^^^^^'@ 替换为 (*@\space*{\fill}@*)// */
             const QString r1 = QStringLiteral(R"===(//@'^^^^^'@)===");
             if (arg.indexOf(r1) > -1) {
-                const QString r2 = argLeft + QStringLiteral(R"===(\mbox{\ \zzDotfill{}})===") +
-                    QStringLiteral(R"==(\resizebox{1ex}{1ex}{//})==") + argRight;
+                const QString r2 = argLeft + QStringLiteral(R"===(\ \zzDotfill{})===") +
+                    QStringLiteral(R"==(\resizebox{1ex}{1ex}{\textcolor[RGB]{%1,%2,%3}{/}\textcolor[RGB]{%4,%5,%6}{/}})==")
+                    .arg(varRandom.gen(), varRandom.gen(), varRandom.gen(), varRandom.gen(), varRandom.gen(), varRandom.gen())
+                    + argRight;
                 arg.replace(r1, r2);
             }
         }
