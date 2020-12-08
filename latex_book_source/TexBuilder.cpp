@@ -1398,7 +1398,7 @@ title=\commandnumbernameone\ \ref{%1}
                     varString += qsl(R"(})")/*1*/;
                 }
                 varString += qsl(R"(} %图片路径
-\caption{)");
+\setlength{\belowcaptionskip}{-8pt}\caption{)");
                 varString += theBookPlainTextToTexText(varArgs2[0]);
                 varString += qsl(R"(} %标题
 \label{)");
