@@ -4,7 +4,7 @@ win32-msvc*{
     CONFIG += suppress_vcproj_warnings
 }else{
     QMAKE_CFLAGS += -std=c11
-    LIBS += -lstdc++fs
+    #LIBS += -lstdc++fs
     LIBS += -lpthread
     LIBS += -lz
 }
